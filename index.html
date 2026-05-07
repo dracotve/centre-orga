@@ -3,951 +3,1029 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Organisation System</title>
-
+<title>OS System</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Saira+Condensed:wght@300;400;600;700&display=swap" rel="stylesheet">
-
 <style>
-
 :root{
     --main:#dc2626;
-    --gold:#f59e0b;
-    --dark:#111;
-    --dark2:#1c1c1c;
-    --gray:#2b2b2b;
+    --dark:#0f0f0f;
+    --dark2:#1a1a1a;
+    --dark3:#242424;
+    --dark4:#2e2e2e;
 }
-
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
-
+*{ box-sizing:border-box; }
 body{
-    width:100vw;
-    height:100vh;
-    overflow:hidden;
-    font-family:'Saira Condensed', sans-serif;
+    margin:0; width:100vw; height:100vh; overflow:hidden;
+    font-family:'Saira Condensed',sans-serif;
     background:url('https://i.imgur.com/X2VrfWW.jpeg') center/cover no-repeat;
 }
+/* ── TASKBAR ── */
+.taskbar{
+    position:fixed; top:0; width:100%; height:46px;
+    background:rgba(0,0,0,0.82); backdrop-filter:blur(12px);
+    display:flex; align-items:center; padding:0 14px; gap:10px;
+    border-bottom:1px solid rgba(255,255,255,0.06); z-index:500;
+}
+.taskbar-logo{
+    display:flex; align-items:center; gap:6px;
+    color:rgba(255,255,255,0.55); font-size:13px; letter-spacing:1px;
+}
+.taskbar-logo svg{ width:18px; height:18px; }
+.taskbar-clock{ color:rgba(255,255,255,0.7); font-size:14px; }
+.taskbar-right{ margin-left:auto; display:flex; align-items:center; gap:10px; }
 
-/* APPS */
+/* bouton connexion global */
+#globalLoginBtn{
+    display:flex; align-items:center; gap:6px;
+    background:var(--main); border:none; color:white; cursor:pointer;
+    padding:6px 14px; border-radius:6px;
+    font-family:'Saira Condensed',sans-serif; font-size:14px; font-weight:700;
+    letter-spacing:0.5px; transition:background 0.2s;
+}
+#globalLoginBtn:hover{ background:#b91c1c; }
+#globalLoginBtn svg{ width:15px; height:15px; }
 
+/* info user connecte */
+#userBadge{
+    display:none; align-items:center; gap:8px;
+    background:rgba(255,255,255,0.07); padding:5px 12px;
+    border-radius:6px; color:white; font-size:13px;
+}
+#userBadge .badge-avatar{
+    width:26px; height:26px; border-radius:50%; background:var(--main);
+    display:flex; align-items:center; justify-content:center;
+}
+#userBadge .badge-avatar svg{ width:14px; height:14px; }
+#logoutGlobal{
+    background:none; border:1px solid rgba(255,255,255,0.2); color:rgba(255,255,255,0.6);
+    padding:3px 8px; border-radius:4px; cursor:pointer; font-size:12px;
+    font-family:'Saira Condensed',sans-serif; transition:0.2s;
+}
+#logoutGlobal:hover{ border-color:var(--main); color:var(--main); }
+
+/* ── DESKTOP ── */
+.desktop{ position:fixed; top:46px; width:100%; height:calc(100vh - 91px); }
+
+/* ── APP ICONS ── */
 .app{
-    position:absolute;
-    width:90px;
-    text-align:center;
-    color:white;
-    cursor:pointer;
-    padding:10px;
-    border-radius:10px;
+    position:absolute; width:90px; text-align:center;
+    color:white; cursor:pointer; transition:0.2s; user-select:none;
 }
-
-.app:hover{
-    background:rgba(255,255,255,0.1);
-}
-
+.app:hover{ transform:scale(1.1); }
 .app-icon{
-    width:70px;
-    height:70px;
-    background:rgba(0,0,0,0.5);
-    border-radius:15px;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    font-size:40px;
-    margin:auto;
+    width:70px; height:70px; background:rgba(0,0,0,0.6);
+    border-radius:12px; display:flex; align-items:center;
+    justify-content:center; margin:auto;
+    border:1px solid rgba(255,255,255,0.1);
 }
+.app-icon svg{ width:34px; height:34px; }
+.app p{ margin:5px 0 0; font-size:13px; text-shadow:0 1px 3px black; }
 
-#app1{
-    top:40px;
-    left:40px;
-}
-
-#app2{
-    top:150px;
-    left:40px;
-}
-
-/* WINDOW */
-
+/* ── WINDOW ── */
 .window{
-    width:1250px;
-    height:720px;
-    background:rgba(15,15,15,0.98);
-    position:absolute;
-    top:50%;
-    left:50%;
-    transform:translate(-50%,-50%);
-    border-radius:15px;
-    overflow:hidden;
-    display:none;
+    position:fixed; width:920px; max-width:96vw;
+    height:620px; max-height:88vh;
+    background:rgba(10,10,10,0.97); border-radius:14px;
+    overflow:hidden; display:none;
+    top:50%; left:50%;
+    transform:translate(-50%,-50%) scale(0.9);
+    opacity:0; transition:0.25s ease;
+    border:1px solid rgba(255,255,255,0.08); z-index:200;
+}
+.window.active{ transform:translate(-50%,-50%) scale(1); opacity:1; display:block; }
+
+.win-header{
+    height:50px; background:var(--dark2);
+    display:flex; justify-content:space-between; align-items:center;
+    padding:0 14px; cursor:move; user-select:none;
+    border-bottom:1px solid rgba(255,255,255,0.05);
+}
+.win-header h3{ color:white; font-size:17px; margin:0; letter-spacing:1px; }
+.win-controls{ display:flex; gap:8px; }
+.win-btn{ width:14px; height:14px; border-radius:50%; cursor:pointer; border:none; outline:none; }
+.btn-close{ background:#ff5f57; }
+.btn-min{ background:#febc2e; }
+.btn-max{ background:#28c840; }
+
+/* ── WIN BODY (sidebar + content) ── */
+.win-body{ display:flex; height:calc(100% - 50px); }
+
+/* sidebar */
+.win-sidebar{
+    width:200px; min-width:200px; background:var(--dark2);
+    border-right:1px solid rgba(255,255,255,0.05);
+    display:flex; flex-direction:column; padding:14px 0;
+}
+.sidebar-item{
+    display:flex; align-items:center; gap:10px;
+    padding:10px 16px; color:rgba(255,255,255,0.6);
+    cursor:pointer; transition:0.15s; font-size:14px;
+}
+.sidebar-item svg{ width:16px; height:16px; flex-shrink:0; }
+.sidebar-item:hover{ background:rgba(255,255,255,0.05); color:white; }
+.sidebar-item.active{ background:rgba(220,38,38,0.15); color:var(--main); border-left:3px solid var(--main); }
+
+/* main content area */
+.win-main{
+    flex:1; overflow-y:auto; padding:20px;
+    color:white;
 }
 
-/* HEADER */
-
-.header{
-    width:100%;
-    height:70px;
-    background:var(--dark2);
-    border-bottom:3px solid var(--main);
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:0 30px;
+/* ── OVERLAY LOGIN MODAL ── */
+#loginModal{
+    position:fixed; inset:0; background:rgba(0,0,0,0.75);
+    display:none; align-items:center; justify-content:center; z-index:1000;
+    backdrop-filter:blur(4px);
 }
-
-.header h1{
-    color:var(--main);
-    font-family:'Bebas Neue', sans-serif;
-    font-size:40px;
-    letter-spacing:4px;
+#loginModal.open{ display:flex; }
+.modal-box{
+    background:#111; border:1px solid rgba(255,255,255,0.1);
+    border-radius:14px; padding:30px; width:320px;
+    display:flex; flex-direction:column; gap:12px;
 }
-
-.header-buttons{
-    display:flex;
-    gap:10px;
+.modal-box h2{
+    margin:0 0 6px; font-family:'Bebas Neue',sans-serif;
+    font-size:26px; letter-spacing:2px; color:var(--main);
 }
+.modal-box input{
+    width:100%; padding:11px; background:var(--dark3);
+    border:1px solid rgba(255,255,255,0.08); color:white;
+    border-radius:6px; outline:none;
+    font-family:'Saira Condensed',sans-serif; font-size:15px;
+    transition:border 0.2s;
+}
+.modal-box input:focus{ border-color:var(--main); }
+.modal-box button{
+    width:100%; padding:11px; background:var(--main);
+    border:none; color:white; cursor:pointer; border-radius:6px;
+    font-family:'Saira Condensed',sans-serif; font-size:16px;
+    font-weight:700; letter-spacing:1px; transition:background 0.2s;
+}
+.modal-box button:hover{ background:#b91c1c; }
+.modal-hint{ font-size:12px; color:rgba(255,255,255,0.3); text-align:center; }
+.modal-close-btn{
+    background:none; border:1px solid rgba(255,255,255,0.15);
+    color:rgba(255,255,255,0.5); padding:8px; border-radius:6px;
+    cursor:pointer; font-family:'Saira Condensed',sans-serif;
+    font-size:13px; transition:0.2s;
+}
+.modal-close-btn:hover{ border-color:var(--main); color:var(--main); }
 
-.logout-btn{
+/* ── ORGA LIST ── */
+.orga-list{ display:flex; flex-direction:column; gap:10px; }
+.orga-card{
+    background:var(--dark3); border-radius:10px; padding:16px 18px;
+    border:1px solid rgba(255,255,255,0.05);
+    display:flex; align-items:center; justify-content:space-between;
+    cursor:pointer; transition:0.2s;
+}
+.orga-card:hover{ border-color:var(--main); }
+.orga-card.selected{ border-color:var(--main); background:rgba(220,38,38,0.1); }
+.orga-card-left{ display:flex; align-items:center; gap:12px; }
+.orga-badge{
+    width:38px; height:38px; border-radius:8px; background:var(--main);
+    display:flex; align-items:center; justify-content:center;
+}
+.orga-badge svg{ width:20px; height:20px; }
+.orga-name{ font-size:16px; font-weight:700; }
+.orga-sub{ font-size:12px; color:rgba(255,255,255,0.4); margin-top:2px; }
+.orga-enter-btn{
+    background:var(--main); border:none; color:white;
+    padding:7px 16px; border-radius:6px; cursor:pointer;
+    font-family:'Saira Condensed',sans-serif; font-size:13px;
+    font-weight:700; transition:0.2s; display:none;
+}
+.orga-enter-btn:hover{ background:#b91c1c; }
+.orga-card.selected .orga-enter-btn{ display:block; }
+
+/* section title */
+.section-title{
+    font-family:'Bebas Neue',sans-serif; font-size:22px;
+    letter-spacing:2px; color:white; margin:0 0 16px;
+    display:flex; align-items:center; gap:10px;
+}
+.section-title svg{ width:22px; height:22px; color:var(--main); }
+
+/* breadcrumb */
+.breadcrumb{
+    display:flex; align-items:center; gap:6px;
+    font-size:13px; color:rgba(255,255,255,0.4); margin-bottom:16px;
+}
+.breadcrumb span{ cursor:pointer; transition:0.15s; }
+.breadcrumb span:hover{ color:white; }
+.breadcrumb .sep{ opacity:0.3; }
+.breadcrumb .current{ color:white; cursor:default; }
+
+/* ── CARTES ID ── */
+.id-cards-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:14px; }
+.id-card{
+    background:linear-gradient(135deg,#1e1e1e,#2a2a2a);
+    border:1px solid rgba(255,255,255,0.08); border-radius:12px;
+    padding:16px; position:relative; overflow:hidden;
+    transition:border 0.2s; cursor:pointer;
+}
+.id-card::before{
+    content:''; position:absolute; top:0; left:0; right:0; height:3px;
     background:var(--main);
-    border:none;
-    color:white;
-    padding:8px 15px;
-    cursor:pointer;
-    font-size:16px;
+}
+.id-card:hover{ border-color:var(--main); }
+.id-card-top{ display:flex; align-items:center; gap:12px; margin-bottom:12px; }
+.id-avatar{
+    width:46px; height:46px; border-radius:50%; background:var(--main);
+    display:flex; align-items:center; justify-content:center; flex-shrink:0;
+    font-family:'Bebas Neue',sans-serif; font-size:20px; letter-spacing:1px;
+}
+.id-name{ font-size:17px; font-weight:700; }
+.id-role{ font-size:12px; color:rgba(255,255,255,0.4); }
+.id-fields{ display:flex; flex-direction:column; gap:5px; }
+.id-field{ display:flex; gap:8px; font-size:13px; }
+.id-field label{ color:rgba(255,255,255,0.4); min-width:60px; }
+.id-field span{ color:white; }
+.id-badge{
+    position:absolute; top:14px; right:14px;
+    background:rgba(220,38,38,0.2); border:1px solid var(--main);
+    color:var(--main); font-size:10px; padding:2px 7px; border-radius:4px;
+    font-weight:700; letter-spacing:0.5px;
 }
 
-.close{
-    color:white;
-    font-size:30px;
-    cursor:pointer;
+/* ── ADMIN PANEL ORGA ── */
+.admin-orga-row{
+    background:var(--dark3); border-radius:8px; padding:12px 16px;
+    display:flex; align-items:center; justify-content:space-between;
+    border:1px solid rgba(255,255,255,0.05); margin-bottom:8px;
 }
-
-/* LOGIN */
-
-.login{
-    width:100%;
-    height:calc(100% - 70px);
-    display:flex;
-    justify-content:center;
-    align-items:center;
+.admin-orga-row:hover{ border-color:rgba(255,255,255,0.15); }
+.admin-btn{
+    padding:5px 12px; border-radius:5px; cursor:pointer;
+    font-family:'Saira Condensed',sans-serif; font-size:13px; border:none;
+    transition:0.2s;
 }
+.admin-btn.edit{ background:rgba(255,255,255,0.1); color:white; }
+.admin-btn.edit:hover{ background:rgba(255,255,255,0.2); }
+.admin-btn.del{ background:rgba(220,38,38,0.2); color:var(--main); }
+.admin-btn.del:hover{ background:var(--main); color:white; }
+.admin-btn-add{
+    display:flex; align-items:center; gap:6px;
+    background:var(--main); border:none; color:white;
+    padding:8px 16px; border-radius:6px; cursor:pointer;
+    font-family:'Saira Condensed',sans-serif; font-size:14px;
+    font-weight:700; margin-bottom:16px; transition:0.2s;
+}
+.admin-btn-add:hover{ background:#b91c1c; }
+.admin-btn-add svg{ width:16px; height:16px; }
 
-.login-box{
-    width:400px;
+/* ── EDIT MODAL ── */
+#editModal{
+    position:fixed; inset:0; background:rgba(0,0,0,0.7);
+    display:none; align-items:center; justify-content:center; z-index:1100;
+    backdrop-filter:blur(4px);
+}
+#editModal.open{ display:flex; }
+.edit-box{
+    background:#111; border:1px solid rgba(255,255,255,0.1);
+    border-radius:14px; padding:28px; width:360px;
+    display:flex; flex-direction:column; gap:10px;
+}
+.edit-box h3{
+    margin:0 0 6px; font-family:'Bebas Neue',sans-serif;
+    font-size:22px; letter-spacing:2px; color:var(--main);
+}
+.edit-box input, .edit-box select{
+    width:100%; padding:10px; background:var(--dark3);
+    border:1px solid rgba(255,255,255,0.08); color:white;
+    border-radius:6px; outline:none;
+    font-family:'Saira Condensed',sans-serif; font-size:14px;
+}
+.edit-box input:focus, .edit-box select:focus{ border-color:var(--main); }
+.edit-box select option{ background:#222; }
+.edit-row{ display:flex; gap:8px; }
+.edit-row button{
+    flex:1; padding:10px; border:none; cursor:pointer; border-radius:6px;
+    font-family:'Saira Condensed',sans-serif; font-size:14px; font-weight:700;
+}
+.edit-save{ background:var(--main); color:white; }
+.edit-save:hover{ background:#b91c1c; }
+.edit-cancel{ background:var(--dark4); color:rgba(255,255,255,0.6); }
+.edit-cancel:hover{ background:var(--dark3); }
+
+/* ── LOCKED overlay ── */
+.locked-overlay{
+    display:flex; flex-direction:column; align-items:center;
+    justify-content:center; height:100%; gap:14px; color:rgba(255,255,255,0.5);
     text-align:center;
 }
-
-.login-box h2{
-    color:var(--main);
-    font-family:'Bebas Neue', sans-serif;
-    font-size:45px;
-    margin-bottom:20px;
+.locked-overlay svg{ width:48px; height:48px; opacity:0.3; }
+.locked-overlay p{ margin:0; font-size:15px; }
+.locked-overlay button{
+    background:var(--main); border:none; color:white;
+    padding:9px 20px; border-radius:6px; cursor:pointer;
+    font-family:'Saira Condensed',sans-serif; font-size:15px;
+    font-weight:700; transition:0.2s;
 }
+.locked-overlay button:hover{ background:#b91c1c; }
 
-.login-box input{
-    width:100%;
-    padding:14px;
-    margin-top:15px;
-    background:var(--gray);
-    border:none;
-    color:white;
-    font-size:18px;
+/* ── NOTIF ── */
+#notif{
+    position:fixed; top:56px; right:16px;
+    background:#111; color:white; padding:10px 15px;
+    display:none; border-left:4px solid var(--main);
+    border-radius:6px; font-size:14px; z-index:2000;
 }
-
-.login-box button{
-    width:100%;
-    padding:14px;
-    margin-top:20px;
-    border:none;
-    background:var(--main);
-    color:white;
-    font-size:22px;
-    font-family:'Bebas Neue', sans-serif;
-    cursor:pointer;
+#notif.show{ animation:slideIn 0.3s ease; }
+@keyframes slideIn{
+    from{ transform:translateX(40px); opacity:0; }
+    to{ transform:translateX(0); opacity:1; }
 }
-
-#error{
-    color:red;
-    margin-top:15px;
+@keyframes shake{
+    0%,100%{ transform:translateX(0); }
+    20%{ transform:translateX(-8px); }
+    40%{ transform:translateX(8px); }
+    60%{ transform:translateX(-5px); }
+    80%{ transform:translateX(5px); }
 }
-
-/* DASHBOARD */
-
-.dashboard{
-    display:none;
-    width:100%;
-    height:calc(100% - 70px);
-}
-
-.sidebar{
-    width:260px;
-    height:100%;
-    background:var(--dark2);
-    border-right:3px solid var(--gray);
-    float:left;
-    padding-top:20px;
-}
-
-.menu{
-    padding:20px 30px;
-    color:white;
-    cursor:pointer;
-    font-size:22px;
-    border-left:4px solid transparent;
-}
-
-.menu:hover{
-    border-left:4px solid var(--main);
-    background:rgba(255,255,255,0.05);
-}
-
-.menu.active{
-    border-left:4px solid var(--gold);
-    color:var(--gold);
-}
-
-.content{
-    margin-left:260px;
-    height:100%;
-    overflow:auto;
-    padding:40px;
-    color:white;
-}
-
-.section{
-    display:none;
-}
-
-.section.active{
-    display:block;
-}
-
-.title{
-    font-family:'Bebas Neue', sans-serif;
-    font-size:55px;
-    color:var(--main);
-    margin-bottom:30px;
-}
-
-/* BOX */
-
-.box{
-    background:var(--dark2);
-    padding:25px;
-    margin-top:20px;
-    border-left:5px solid var(--main);
-}
-
-.box h3{
-    color:var(--gold);
-    font-size:30px;
-    margin-bottom:15px;
-}
-
-.box p{
-    font-size:20px;
-}
-
-.admin-input{
-    width:100%;
-    padding:12px;
-    background:#222;
-    border:none;
-    color:white;
-    margin-top:10px;
-}
-
-.admin-btn{
-    padding:12px 20px;
-    margin-top:15px;
-    background:var(--main);
-    border:none;
-    color:white;
-    cursor:pointer;
-}
-
-.member, .operation{
-    background:#222;
-    padding:15px;
-    margin-top:10px;
-}
-
-.permission{
-    margin-top:10px;
-    font-size:18px;
-}
-
-/* NOTIFICATION */
-
-#notification{
-    position:fixed;
-    top:20px;
-    right:20px;
-    background:#111;
-    color:white;
-    padding:18px 25px;
-    border-left:5px solid var(--main);
-    display:none;
-    z-index:999999;
-    font-size:18px;
-    border-radius:10px;
-    box-shadow:0 0 20px rgba(0,0,0,0.5);
-    animation:slide 0.3s ease;
-}
-
-@keyframes slide{
-    from{
-        transform:translateX(100px);
-        opacity:0;
-    }
-    to{
-        transform:translateX(0);
-        opacity:1;
-    }
-}
-
+.shake{ animation:shake 0.4s ease; }
 </style>
 </head>
-
 <body>
 
-<!-- APP 1 -->
-
-<div class="app" id="app1" onclick="openWindow('Tamplate')">
-    <div class="app-icon">?</div>
-    <p>Tamplate</p>
+<!-- ── TASKBAR ── -->
+<div class="taskbar">
+    <div class="taskbar-logo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+            <rect x="2" y="3" width="20" height="14" rx="2"/>
+            <path d="M8 21h8M12 17v4"/>
+        </svg>
+        OS SYSTEM
+    </div>
+    <div class="taskbar-right">
+        <div class="taskbar-clock" id="clock">00:00</div>
+        <!-- bouton connexion -->
+        <button id="globalLoginBtn" onclick="openLoginModal()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4"/>
+                <polyline points="10 17 15 12 10 7"/>
+                <line x1="15" y1="12" x2="3" y2="12"/>
+            </svg>
+            Se connecter
+        </button>
+        <!-- badge utilisateur connecte -->
+        <div id="userBadge">
+            <div class="badge-avatar">
+                <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+                    <circle cx="12" cy="7" r="4"/>
+                </svg>
+            </div>
+            <span id="badgeName">admin</span>
+            <button id="logoutGlobal" onclick="doGlobalLogout()">Deconnexion</button>
+        </div>
+    </div>
 </div>
 
-<!-- APP 2 -->
+<!-- ── DESKTOP ── -->
+<div class="desktop">
 
-<div class="app" id="app2" onclick="openWindow('Tamplate 2')">
-    <div class="app-icon">T2</div>
-    <p>Tamplate 2</p>
-</div>
-
-<!-- WINDOW -->
-
-<div class="window" id="window">
-
-    <div class="header">
-
-        <div style="display:flex;align-items:center;gap:20px;">
-
-            <h1 id="orgTitle">Tamplate</h1>
-
-            <div id="connectedUser" style="
-            color:white;
-            font-size:20px;
-            background:rgba(255,255,255,0.08);
-            padding:8px 15px;
-            border-radius:8px;
-            ">
-                Connecté : admin
-            </div>
-
+    <div class="app" style="top:30px;left:40px;" onclick="openWin('org')">
+        <div class="app-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="18" height="18" rx="2"/>
+                <line x1="9" y1="3" x2="9" y2="21"/>
+                <line x1="15" y1="3" x2="15" y2="21"/>
+                <line x1="3" y1="9" x2="21" y2="9"/>
+                <line x1="3" y1="15" x2="21" y2="15"/>
+            </svg>
         </div>
-
-        <div class="header-buttons">
-
-            <button class="logout-btn" onclick="logout()">
-                Déconnexion
-            </button>
-
-            <div class="close" onclick="closeWindow()">
-                ✕
-            </div>
-
-        </div>
-
+        <p>Organisations</p>
     </div>
 
-    <!-- LOGIN -->
-
-    <div class="login" id="loginPage">
-
-        <div class="login-box">
-
-            <h2>Connexion</h2>
-
-            <input type="text" id="user" placeholder="Nom">
-
-            <input type="password" id="pass" placeholder="Mot de passe">
-
-            <button onclick="login()">
-                SE CONNECTER
-            </button>
-
-            <div id="error"></div>
-
+    <div class="app" style="top:30px;left:150px;" onclick="openWin('fichiers')">
+        <div class="app-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"/>
+            </svg>
         </div>
-
-    </div>
-
-    <!-- DASHBOARD -->
-
-    <div class="dashboard" id="dashboard">
-
-        <div class="sidebar">
-
-            <div class="menu active" onclick="showSection('info', this)">
-                Informations
-            </div>
-
-            <div class="menu" onclick="showSection('operations', this)">
-                Opérations
-            </div>
-
-            <div class="menu" onclick="showSection('members', this)">
-                Membres
-            </div>
-
-            <div class="menu" onclick="showSection('security', this)">
-                Sécurité
-            </div>
-
-        </div>
-
-        <div class="content">
-
-            <!-- INFO -->
-
-            <div class="section active" id="info">
-
-                <div class="title" id="infoTitle">
-                    Organisation
-                </div>
-
-                <div class="box">
-
-                    <h3>À propos</h3>
-
-                    <p>
-                        Organisation sécurisée spécialisée dans
-                        les opérations privées.
-                    </p>
-
-                </div>
-
-            </div>
-
-            <!-- OPERATIONS -->
-
-            <div class="section" id="operations">
-
-                <div class="title">
-                    Opérations
-                </div>
-
-                <div id="operationsList"></div>
-
-            </div>
-
-            <!-- MEMBERS -->
-
-            <div class="section" id="members">
-
-                <div class="title">
-                    Membres
-                </div>
-
-                <div id="membersList"></div>
-
-            </div>
-
-            <!-- SECURITY -->
-
-            <div class="section" id="security">
-
-                <div class="title">
-                    Paramètres
-                </div>
-
-                <!-- COLOR -->
-
-                <div class="box" id="colorBox">
-
-                    <h3>Changer la couleur</h3>
-
-                    <input type="color" id="colorPicker" class="admin-input">
-
-                    <button class="admin-btn" onclick="changeColor()">
-                        Sauvegarder
-                    </button>
-
-                </div>
-
-                <!-- MEMBER -->
-
-                <div class="box" id="memberBox">
-
-                    <h3>Ajouter un membre</h3>
-
-                    <input type="text" id="newUser" class="admin-input" placeholder="Nom">
-
-                    <input type="password" id="newPass" class="admin-input" placeholder="Mot de passe">
-
-                    <div class="permission">
-                        <input type="checkbox" id="permColor">
-                        Changer la couleur
-                    </div>
-
-                    <div class="permission">
-                        <input type="checkbox" id="permMember">
-                        Ajouter des membres
-                    </div>
-
-                    <div class="permission">
-                        <input type="checkbox" id="permOperation">
-                        Ajouter des opérations
-                    </div>
-
-                    <button class="admin-btn" onclick="addMember()">
-                        Ajouter
-                    </button>
-
-                </div>
-
-                <!-- OP -->
-
-                <div class="box" id="operationBox">
-
-                    <h3>Ajouter une opération</h3>
-
-                    <input type="text" id="opName" class="admin-input" placeholder="Nom opération">
-
-                    <input type="text" id="opDesc" class="admin-input" placeholder="Description">
-
-                    <button class="admin-btn" onclick="addOperation()">
-                        Ajouter
-                    </button>
-
-                </div>
-
-            </div>
-
-        </div>
-
+        <p>Fichiers</p>
     </div>
 
 </div>
 
-<!-- NOTIFICATION -->
-
-<div id="notification">
-    Notification
+<!-- ── FENETRE PRINCIPALE ── -->
+<div class="window" id="mainWin">
+    <div class="win-header" id="dragHandle">
+        <h3 id="winTitle">Organisations</h3>
+        <div class="win-controls">
+            <div class="win-btn btn-min"></div>
+            <div class="win-btn btn-max"></div>
+            <div class="win-btn btn-close" onclick="closeWin()"></div>
+        </div>
+    </div>
+    <div class="win-body">
+        <!-- sidebar -->
+        <div class="win-sidebar">
+            <div class="sidebar-item active" id="sb-orgas" onclick="showTab('orgas')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="3" width="18" height="18" rx="2"/>
+                    <line x1="9" y1="3" x2="9" y2="21"/>
+                    <line x1="3" y1="9" x2="21" y2="9"/>
+                </svg>
+                Organisations
+            </div>
+            <div class="sidebar-item" id="sb-cartes" onclick="showTab('cartes')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="5" width="20" height="14" rx="2"/>
+                    <line x1="2" y1="10" x2="22" y2="10"/>
+                </svg>
+                Cartes ID
+            </div>
+            <div class="sidebar-item" id="sb-admin" onclick="showTab('admin')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="3"/>
+                    <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/>
+                </svg>
+                Administration
+            </div>
+        </div>
+        <!-- contenu -->
+        <div class="win-main" id="winMain"></div>
+    </div>
 </div>
 
-<!-- SOUND -->
+<!-- ── LOGIN MODAL ── -->
+<div id="loginModal">
+    <div class="modal-box">
+        <h2>Connexion</h2>
+        <input id="mUser" placeholder="Nom d'utilisateur">
+        <input id="mPass" type="password" placeholder="Mot de passe">
+        <button onclick="doGlobalLogin()">Se connecter</button>
+        <p class="modal-hint">admin / admin123</p>
+        <button class="modal-close-btn" onclick="closeLoginModal()">Annuler</button>
+    </div>
+</div>
 
-<audio id="notifSound">
-    <source src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3" type="audio/mpeg">
-</audio>
+<!-- ── EDIT MODAL ── -->
+<div id="editModal">
+    <div class="edit-box">
+        <h3 id="editTitle">Modifier</h3>
+        <input id="editNom" placeholder="Nom du joueur">
+        <input id="editRole" placeholder="Role (ex: Chef, Membre...)">
+        <input id="editInfo" placeholder="Info supplementaire">
+        <select id="editOrga"></select>
+        <div class="edit-row">
+            <button class="edit-cancel" onclick="closeEditModal()">Annuler</button>
+            <button class="edit-save" onclick="saveEdit()">Sauvegarder</button>
+        </div>
+    </div>
+</div>
+
+<!-- NOTIF -->
+<div id="notif"></div>
 
 <script>
-
-let currentOrg = "";
-let currentUser = null;
-
-/* STORAGE */
-
-if(!localStorage.getItem("organizations")){
-
-    const data = {
-
-        "Tamplate":{
-
-            color:"#dc2626",
-
-            members:[
-                {
-                    user:"admin",
-                    pass:"admin123",
-
-                    permissions:{
-                        changeColor:true,
-                        addMember:true,
-                        addOperation:true
-                    }
-                }
-            ],
-
-            operations:[
-                {
-                    name:"Mission Delta",
-                    desc:"Mission principale"
-                }
-            ]
-
-        },
-
-        "Tamplate 2":{
-
-            color:"#2563eb",
-
-            members:[
-                {
-                    user:"admin",
-                    pass:"admin123",
-
-                    permissions:{
-                        changeColor:true,
-                        addMember:true,
-                        addOperation:true
-                    }
-                }
-            ],
-
-            operations:[
-                {
-                    name:"Ghost",
-                    desc:"Mission spéciale"
-                }
-            ]
-
-        }
-
-    };
-
-    localStorage.setItem(
-        "organizations",
-        JSON.stringify(data)
-    );
-
+// ══════════════════════════════════════════
+//  AUDIO
+// ══════════════════════════════════════════
+const AC=new(window.AudioContext||window.webkitAudioContext)();
+function resume(){if(AC.state==='suspended')AC.resume();}
+function tone(f,ef,type,vol,dur,delay=0){
+    resume();
+    const o=AC.createOscillator(),g=AC.createGain();
+    o.connect(g);g.connect(AC.destination);
+    o.type=type; const t=AC.currentTime+delay;
+    o.frequency.setValueAtTime(f,t);
+    if(ef)o.frequency.exponentialRampToValueAtTime(ef,t+dur);
+    g.gain.setValueAtTime(vol,t);
+    g.gain.exponentialRampToValueAtTime(0.001,t+dur);
+    o.start(t);o.stop(t+dur);
 }
+function playClick(){tone(880,440,'sine',0.12,0.1);}
+function playHover(){tone(660,660,'sine',0.04,0.06);}
+function playOpen(){tone(300,600,'sine',0.12,0.18);}
+function playClose(){tone(500,200,'sine',0.12,0.18);}
+function playError(){tone(200,100,'sawtooth',0.1,0.28);}
+function playSuccess(){[523,659,784].forEach((f,i)=>tone(f,f,'sine',0.12,0.2,i*0.1));}
+function playNotif(){tone(1000,1200,'sine',0.07,0.1);}
 
-/* NOTIFICATION */
+// ══════════════════════════════════════════
+//  DONNEES
+// ══════════════════════════════════════════
+const USERS={
+    admin:{pass:'admin123',role:'admin'},
+    user1:{pass:'pass1',role:'member',orga:'test1'},
+    user2:{pass:'pass2',role:'member',orga:'test2'}
+};
 
-function showNotification(text){
+let orgas=[
+    {id:'test1', name:'Test 1', desc:'Organisation de test numero 1'},
+    {id:'test2', name:'Test 2', desc:'Organisation de test numero 2'},
+];
 
-    const notif =
-        document.getElementById("notification");
+let membres=[
+    {id:1, nom:'Jean Dupont',  role:'Chef',   orga:'test1', info:'Fondateur'},
+    {id:2, nom:'Marie Martin', role:'Membre',  orga:'test1', info:'Recrue'},
+    {id:3, nom:'Paul Durand',  role:'Chef',   orga:'test2', info:'Leader'},
+    {id:4, nom:'Sara Petit',   role:'Membre',  orga:'test2', info:'Pilote'},
+];
 
-    notif.innerHTML = text;
+let nextId=10;
+let currentUser=null; // null = non connecte
+let selectedOrga=null; // orga selectionnee dans la liste
+let activeOrga=null;   // orga dans laquelle on est entre
+let currentTab='orgas';
+let editTarget=null;   // {type:'membre'|'orga', id}
+let currentWin=null;
 
-    notif.style.display = "block";
-
-    document.getElementById("notifSound").play();
-
-    setTimeout(()=>{
-
-        notif.style.display = "none";
-
-    }, 3000);
-
+// ══════════════════════════════════════════
+//  HORLOGE
+// ══════════════════════════════════════════
+function updateClock(){
+    const n=new Date();
+    document.getElementById('clock').innerText=
+        String(n.getHours()).padStart(2,'0')+':'+String(n.getMinutes()).padStart(2,'0');
 }
+updateClock();setInterval(updateClock,1000);
 
-/* OPEN */
-
-function openWindow(org){
-
-    currentOrg = org;
-
-    document.getElementById("window").style.display =
-        "block";
-
-    document.getElementById("orgTitle").innerHTML =
-        org;
-
+// ══════════════════════════════════════════
+//  LOGIN GLOBAL
+// ══════════════════════════════════════════
+function openLoginModal(){
+    document.getElementById('loginModal').classList.add('open');
+    document.getElementById('mUser').value='';
+    document.getElementById('mPass').value='';
 }
-
-/* CLOSE */
-
-function closeWindow(){
-
-    document.getElementById("window").style.display =
-        "none";
-
+function closeLoginModal(){
+    document.getElementById('loginModal').classList.remove('open');
 }
-
-/* LOGOUT */
-
-function logout(){
-
-    document.getElementById("dashboard").style.display =
-        "none";
-
-    document.getElementById("loginPage").style.display =
-        "flex";
-
-    document.getElementById("user").value = "";
-    document.getElementById("pass").value = "";
-
-    showNotification("Déconnexion");
-
-}
-
-/* LOGIN */
-
-function login(){
-
-    const user =
-        document.getElementById("user").value;
-
-    const pass =
-        document.getElementById("pass").value;
-
-    const data =
-        JSON.parse(localStorage.getItem("organizations"));
-
-    const found =
-        data[currentOrg].members.find(m =>
-            m.user === user && m.pass === pass
-        );
-
-    if(found){
-
-        currentUser = found;
-
-        document.getElementById("connectedUser").innerHTML =
-            "Connecté : " + currentUser.user;
-
-        document.getElementById("loginPage").style.display =
-            "none";
-
-        document.getElementById("dashboard").style.display =
-            "block";
-
-        loadOrganization();
-
-        applyPermissions();
-
-        showNotification(
-            "Connexion réussie à " + currentOrg
-        );
-
+function doGlobalLogin(){
+    const u=document.getElementById('mUser').value.trim();
+    const p=document.getElementById('mPass').value;
+    if(USERS[u]&&USERS[u].pass===p){
+        currentUser={name:u,...USERS[u]};
+        playSuccess();
+        closeLoginModal();
+        document.getElementById('globalLoginBtn').style.display='none';
+        const badge=document.getElementById('userBadge');
+        badge.style.display='flex';
+        document.getElementById('badgeName').innerText=u;
+        showNotif('Connecte : '+u);
+        if(currentWin) renderTab(currentTab);
     } else {
+        playError();
+        const inputs=document.querySelectorAll('#loginModal input');
+        inputs.forEach(i=>{i.classList.remove('shake');void i.offsetWidth;i.classList.add('shake');});
+        showNotif('Identifiants incorrects');
+    }
+}
+function doGlobalLogout(){
+    currentUser=null; selectedOrga=null; activeOrga=null;
+    document.getElementById('globalLoginBtn').style.display='flex';
+    document.getElementById('userBadge').style.display='none';
+    showNotif('Deconnecte');
+    if(currentWin) renderTab(currentTab);
+}
+document.getElementById('mPass').addEventListener('keydown',e=>{ if(e.key==='Enter') doGlobalLogin(); });
 
-        document.getElementById("error").innerHTML =
-            "Nom ou mot de passe incorrect.";
+// ══════════════════════════════════════════
+//  FENETRE
+// ══════════════════════════════════════════
+function openWin(type){
+    playOpen();
+    currentWin=type;
+    selectedOrga=null; activeOrga=null;
+    const win=document.getElementById('mainWin');
+    win.style.display='block';
+    setTimeout(()=>win.classList.add('active'),10);
+    currentTab='orgas';
+    updateSidebar('sb-orgas');
+    renderTab('orgas');
+}
+function closeWin(){
+    playClose();
+    const win=document.getElementById('mainWin');
+    win.classList.remove('active');
+    setTimeout(()=>win.style.display='none',250);
+    currentWin=null;
+}
+function showTab(tab){
+    playClick();
+    currentTab=tab;
+    updateSidebar('sb-'+tab);
+    renderTab(tab);
+}
+function updateSidebar(activeId){
+    document.querySelectorAll('.sidebar-item').forEach(el=>el.classList.remove('active'));
+    const el=document.getElementById(activeId);
+    if(el) el.classList.add('active');
+}
 
+// ══════════════════════════════════════════
+//  RENDER
+// ══════════════════════════════════════════
+function renderTab(tab){
+    const main=document.getElementById('winMain');
+    if(tab==='orgas') renderOrgas(main);
+    else if(tab==='cartes') renderCartes(main);
+    else if(tab==='admin') renderAdmin(main);
+}
+
+/* --- ORGAS --- */
+function renderOrgas(main){
+    // Si on est entre dans une orga → afficher son contenu
+    if(activeOrga){
+        renderOrgaInside(main, activeOrga);
+        return;
+    }
+    let html=`<div class="section-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:22px;height:22px">
+            <rect x="3" y="3" width="18" height="18" rx="2"/>
+            <line x1="9" y1="3" x2="9" y2="21"/>
+            <line x1="3" y1="9" x2="21" y2="9"/>
+        </svg>
+        Organisations disponibles
+    </div>
+    <div class="orga-list">`;
+
+    orgas.forEach(o=>{
+        const sel=selectedOrga===o.id ? 'selected':'';
+        const membCount=membres.filter(m=>m.orga===o.id).length;
+        html+=`
+        <div class="orga-card ${sel}" onclick="selectOrga('${o.id}')">
+            <div class="orga-card-left">
+                <div class="orga-badge">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round">
+                        <rect x="3" y="3" width="18" height="18" rx="2"/>
+                        <line x1="9" y1="3" x2="9" y2="21"/>
+                        <line x1="3" y1="9" x2="21" y2="9"/>
+                    </svg>
+                </div>
+                <div>
+                    <div class="orga-name">${o.name}</div>
+                    <div class="orga-sub">${o.desc} &bull; ${membCount} membre${membCount>1?'s':''}</div>
+                </div>
+            </div>
+            <button class="orga-enter-btn" onclick="event.stopPropagation();enterOrga('${o.id}')">Entrer</button>
+        </div>`;
+    });
+    html+=`</div>`;
+    main.innerHTML=html;
+}
+
+function selectOrga(id){
+    playClick();
+    selectedOrga=id;
+    renderTab('orgas');
+}
+
+function enterOrga(id){
+    // Verifier connexion
+    if(!currentUser){ openLoginModal(); showNotif('Connexion requise'); return; }
+    // Verifier droit : admin peut tout, member seulement sa propre orga
+    if(currentUser.role!=='admin' && currentUser.orga!==id){
+        playError(); showNotif('Acces refuse'); return;
+    }
+    playSuccess();
+    activeOrga=id;
+    renderTab('orgas');
+}
+
+function renderOrgaInside(main, orgaId){
+    const o=orgas.find(x=>x.id===orgaId);
+    const membs=membres.filter(m=>m.orga===orgaId);
+
+    let html=`
+    <div class="breadcrumb">
+        <span onclick="exitOrga()">Organisations</span>
+        <span class="sep">/</span>
+        <span class="current">${o.name}</span>
+    </div>
+    <div class="section-title">${o.name}</div>
+    <p style="color:rgba(255,255,255,0.4);font-size:14px;margin:0 0 18px;">${o.desc}</p>
+    <div class="section-title" style="font-size:17px;margin-bottom:12px;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="1.5" stroke-linecap="round" style="width:18px;height:18px">
+            <rect x="2" y="5" width="20" height="14" rx="2"/>
+            <line x1="2" y1="10" x2="22" y2="10"/>
+        </svg>
+        Cartes ID
+    </div>
+    <div class="id-cards-grid">`;
+
+    if(membs.length===0){
+        html+=`<p style="color:rgba(255,255,255,0.35);font-size:14px;">Aucun membre dans cette organisation.</p>`;
+    }
+    membs.forEach(m=>{
+        const initials=m.nom.split(' ').map(w=>w[0]).join('').substring(0,2).toUpperCase();
+        html+=`
+        <div class="id-card" onclick="openEditMembre(${m.id})">
+            <div class="id-badge">${m.role.toUpperCase()}</div>
+            <div class="id-card-top">
+                <div class="id-avatar">${initials}</div>
+                <div>
+                    <div class="id-name">${m.nom}</div>
+                    <div class="id-role">${o.name}</div>
+                </div>
+            </div>
+            <div class="id-fields">
+                <div class="id-field"><label>Role</label><span>${m.role}</span></div>
+                <div class="id-field"><label>Info</label><span>${m.info}</span></div>
+            </div>
+        </div>`;
+    });
+    html+=`</div>`;
+
+    if(currentUser && currentUser.role==='admin'){
+        html+=`<button class="admin-btn-add" style="margin-top:18px;" onclick="openAddMembre('${orgaId}')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Ajouter un membre
+        </button>`;
     }
 
+    main.innerHTML=html;
 }
 
-/* LOAD */
-
-function loadOrganization(){
-
-    const data =
-        JSON.parse(localStorage.getItem("organizations"));
-
-    const org = data[currentOrg];
-
-    document.documentElement.style.setProperty(
-        "--main",
-        org.color
-    );
-
-    document.getElementById("infoTitle").innerHTML =
-        currentOrg;
-
-    /* MEMBERS */
-
-    let membersHTML = "";
-
-    org.members.forEach(member => {
-
-        membersHTML += `
-            <div class="member">
-
-                <h3>${member.user}</h3>
-
-                <p>
-                    Couleur :
-                    ${member.permissions.changeColor ? "Oui" : "Non"}
-                </p>
-
-                <p>
-                    Ajouter membre :
-                    ${member.permissions.addMember ? "Oui" : "Non"}
-                </p>
-
-                <p>
-                    Ajouter opération :
-                    ${member.permissions.addOperation ? "Oui" : "Non"}
-                </p>
-
-            </div>
-        `;
-
-    });
-
-    document.getElementById("membersList").innerHTML =
-        membersHTML;
-
-    /* OPERATIONS */
-
-    let operationsHTML = "";
-
-    org.operations.forEach(op => {
-
-        operationsHTML += `
-            <div class="operation">
-
-                <h3>${op.name}</h3>
-
-                <p>${op.desc}</p>
-
-            </div>
-        `;
-
-    });
-
-    document.getElementById("operationsList").innerHTML =
-        operationsHTML;
-
+function exitOrga(){
+    playClick();
+    activeOrga=null;
+    selectedOrga=null;
+    renderTab('orgas');
 }
 
-/* PERMISSIONS */
-
-function applyPermissions(){
-
-    document.getElementById("colorBox").style.display =
-        currentUser.permissions.changeColor
-        ? "block"
-        : "none";
-
-    document.getElementById("memberBox").style.display =
-        currentUser.permissions.addMember
-        ? "block"
-        : "none";
-
-    document.getElementById("operationBox").style.display =
-        currentUser.permissions.addOperation
-        ? "block"
-        : "none";
-
-}
-
-/* CHANGE COLOR */
-
-function changeColor(){
-
-    const color =
-        document.getElementById("colorPicker").value;
-
-    const data =
-        JSON.parse(localStorage.getItem("organizations"));
-
-    data[currentOrg].color = color;
-
-    localStorage.setItem(
-        "organizations",
-        JSON.stringify(data)
-    );
-
-    loadOrganization();
-
-    showNotification(
-        "Couleur modifiée"
-    );
-
-}
-
-/* ADD MEMBER */
-
-function addMember(){
-
-    const user =
-        document.getElementById("newUser").value;
-
-    const pass =
-        document.getElementById("newPass").value;
-
-    const permColor =
-        document.getElementById("permColor").checked;
-
-    const permMember =
-        document.getElementById("permMember").checked;
-
-    const permOperation =
-        document.getElementById("permOperation").checked;
-
-    if(user === "" || pass === ""){
+/* --- CARTES ID (vue globale admin) --- */
+function renderCartes(main){
+    if(!currentUser){
+        main.innerHTML=lockedHTML('Connexion requise pour voir les cartes ID');
         return;
     }
 
-    const data =
-        JSON.parse(localStorage.getItem("organizations"));
+    let visibleMembs;
+    if(currentUser.role==='admin'){
+        visibleMembs=membres;
+    } else {
+        visibleMembs=membres.filter(m=>m.orga===currentUser.orga);
+    }
 
-    data[currentOrg].members.push({
+    let html=`<div class="section-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="1.5" stroke-linecap="round" style="width:22px;height:22px">
+            <rect x="2" y="5" width="20" height="14" rx="2"/>
+            <line x1="2" y1="10" x2="22" y2="10"/>
+        </svg>
+        Cartes ID ${currentUser.role==='admin'?'(toutes les organisations)':'('+getOrgaName(currentUser.orga)+')'}
+    </div>
+    <div class="id-cards-grid">`;
 
-        user:user,
-        pass:pass,
+    visibleMembs.forEach(m=>{
+        const o=orgas.find(x=>x.id===m.orga);
+        const initials=m.nom.split(' ').map(w=>w[0]).join('').substring(0,2).toUpperCase();
+        html+=`
+        <div class="id-card" onclick="${currentUser.role==='admin'?'openEditMembre('+m.id+')':''}">
+            <div class="id-badge">${m.role.toUpperCase()}</div>
+            <div class="id-card-top">
+                <div class="id-avatar">${initials}</div>
+                <div>
+                    <div class="id-name">${m.nom}</div>
+                    <div class="id-role">${o?o.name:'?'}</div>
+                </div>
+            </div>
+            <div class="id-fields">
+                <div class="id-field"><label>Role</label><span>${m.role}</span></div>
+                <div class="id-field"><label>Info</label><span>${m.info}</span></div>
+            </div>
+        </div>`;
+    });
+    html+=`</div>`;
+    main.innerHTML=html;
+}
 
-        permissions:{
-            changeColor:permColor,
-            addMember:permMember,
-            addOperation:permOperation
+/* --- ADMIN --- */
+function renderAdmin(main){
+    if(!currentUser || currentUser.role!=='admin'){
+        main.innerHTML=lockedHTML('Acces reserve aux administrateurs');
+        return;
+    }
+    let html=`<div class="section-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="1.5" stroke-linecap="round" style="width:22px;height:22px">
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/>
+        </svg>
+        Administration
+    </div>
+
+    <p style="color:rgba(255,255,255,0.5);font-size:14px;margin:0 0 14px;">Gestion des organisations</p>
+    <button class="admin-btn-add" onclick="openAddOrga()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Nouvelle organisation
+    </button>`;
+
+    orgas.forEach(o=>{
+        const cnt=membres.filter(m=>m.orga===o.id).length;
+        html+=`
+        <div class="admin-orga-row">
+            <div>
+                <div style="font-size:15px;font-weight:700;">${o.name}</div>
+                <div style="font-size:12px;color:rgba(255,255,255,0.4);">${o.desc} &bull; ${cnt} membre${cnt>1?'s':''}</div>
+            </div>
+            <div style="display:flex;gap:8px;">
+                <button class="admin-btn edit" onclick="openEditOrga('${o.id}')">Modifier</button>
+                <button class="admin-btn del" onclick="deleteOrga('${o.id}')">Supprimer</button>
+            </div>
+        </div>`;
+    });
+
+    html+=`<hr style="border:none;border-top:1px solid rgba(255,255,255,0.06);margin:20px 0;">
+    <p style="color:rgba(255,255,255,0.5);font-size:14px;margin:0 0 14px;">Tous les membres</p>`;
+
+    membres.forEach(m=>{
+        const o=orgas.find(x=>x.id===m.orga);
+        html+=`
+        <div class="admin-orga-row">
+            <div>
+                <div style="font-size:15px;font-weight:700;">${m.nom} <span style="color:rgba(255,255,255,0.35);font-size:12px;font-weight:400;">— ${m.role}</span></div>
+                <div style="font-size:12px;color:rgba(255,255,255,0.4);">${o?o.name:'?'} &bull; ${m.info}</div>
+            </div>
+            <div style="display:flex;gap:8px;">
+                <button class="admin-btn edit" onclick="openEditMembre(${m.id})">Modifier</button>
+                <button class="admin-btn del" onclick="deleteMembre(${m.id})">Supprimer</button>
+            </div>
+        </div>`;
+    });
+
+    main.innerHTML=html;
+}
+
+function lockedHTML(msg){
+    return `<div class="locked-overlay">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+            <rect x="3" y="11" width="18" height="11" rx="2"/>
+            <path d="M7 11V7a5 5 0 0110 0v4"/>
+        </svg>
+        <p>${msg}</p>
+        <button onclick="openLoginModal()">Se connecter</button>
+    </div>`;
+}
+
+function getOrgaName(id){
+    const o=orgas.find(x=>x.id===id);
+    return o?o.name:id;
+}
+
+// ══════════════════════════════════════════
+//  EDIT MODAL
+// ══════════════════════════════════════════
+function buildOrgaSelect(selected){
+    const sel=document.getElementById('editOrga');
+    sel.innerHTML='';
+    orgas.forEach(o=>{
+        const opt=document.createElement('option');
+        opt.value=o.id; opt.innerText=o.name;
+        if(o.id===selected) opt.selected=true;
+        sel.appendChild(opt);
+    });
+}
+
+function openAddMembre(orgaId){
+    playClick();
+    editTarget={type:'membre',id:null};
+    document.getElementById('editTitle').innerText='Ajouter un membre';
+    document.getElementById('editNom').value='';
+    document.getElementById('editRole').value='';
+    document.getElementById('editInfo').value='';
+    document.getElementById('editOrga').style.display='block';
+    buildOrgaSelect(orgaId);
+    document.getElementById('editModal').classList.add('open');
+}
+
+function openEditMembre(id){
+    if(!currentUser || currentUser.role!=='admin'){ showNotif('Acces refuse'); return; }
+    playClick();
+    const m=membres.find(x=>x.id===id);
+    if(!m) return;
+    editTarget={type:'membre',id};
+    document.getElementById('editTitle').innerText='Modifier le membre';
+    document.getElementById('editNom').value=m.nom;
+    document.getElementById('editRole').value=m.role;
+    document.getElementById('editInfo').value=m.info;
+    document.getElementById('editOrga').style.display='block';
+    buildOrgaSelect(m.orga);
+    document.getElementById('editModal').classList.add('open');
+}
+
+function openAddOrga(){
+    playClick();
+    editTarget={type:'orga',id:null};
+    document.getElementById('editTitle').innerText='Nouvelle organisation';
+    document.getElementById('editNom').value='';
+    document.getElementById('editRole').value='';
+    document.getElementById('editInfo').value='';
+    document.getElementById('editOrga').style.display='none';
+    document.getElementById('editModal').classList.add('open');
+}
+
+function openEditOrga(id){
+    playClick();
+    const o=orgas.find(x=>x.id===id);
+    if(!o) return;
+    editTarget={type:'orga',id};
+    document.getElementById('editTitle').innerText='Modifier l\'organisation';
+    document.getElementById('editNom').value=o.name;
+    document.getElementById('editRole').value=o.desc;
+    document.getElementById('editInfo').value='';
+    document.getElementById('editOrga').style.display='none';
+    document.getElementById('editModal').classList.add('open');
+}
+
+function closeEditModal(){
+    document.getElementById('editModal').classList.remove('open');
+    editTarget=null;
+}
+
+function saveEdit(){
+    if(!editTarget) return;
+    const nom=document.getElementById('editNom').value.trim();
+    if(!nom){ showNotif('Nom requis'); return; }
+
+    if(editTarget.type==='membre'){
+        const role=document.getElementById('editRole').value.trim()||'Membre';
+        const info=document.getElementById('editInfo').value.trim();
+        const orga=document.getElementById('editOrga').value;
+        if(editTarget.id===null){
+            membres.push({id:nextId++, nom, role, orga, info});
+            showNotif('Membre ajoute');
+        } else {
+            const m=membres.find(x=>x.id===editTarget.id);
+            if(m){m.nom=nom;m.role=role;m.info=info;m.orga=orga;}
+            showNotif('Membre mis a jour');
         }
-
-    });
-
-    localStorage.setItem(
-        "organizations",
-        JSON.stringify(data)
-    );
-
-    loadOrganization();
-
-    showNotification(
-        "Membre ajouté : " + user
-    );
-
+    } else {
+        const desc=document.getElementById('editRole').value.trim()||'Organisation';
+        if(editTarget.id===null){
+            const newId='orga_'+nextId++;
+            orgas.push({id:newId, name:nom, desc});
+            showNotif('Organisation creee');
+        } else {
+            const o=orgas.find(x=>x.id===editTarget.id);
+            if(o){o.name=nom;o.desc=desc;}
+            showNotif('Organisation mise a jour');
+        }
+    }
+    playSuccess();
+    closeEditModal();
+    renderTab(currentTab);
+    if(activeOrga) renderTab('orgas');
 }
 
-/* ADD OPERATION */
-
-function addOperation(){
-
-    const name =
-        document.getElementById("opName").value;
-
-    const desc =
-        document.getElementById("opDesc").value;
-
-    const data =
-        JSON.parse(localStorage.getItem("organizations"));
-
-    data[currentOrg].operations.push({
-        name:name,
-        desc:desc
-    });
-
-    localStorage.setItem(
-        "organizations",
-        JSON.stringify(data)
-    );
-
-    loadOrganization();
-
-    showNotification(
-        "Nouvelle opération ajoutée"
-    );
-
+function deleteMembre(id){
+    if(!confirm('Supprimer ce membre ?')) return;
+    membres=membres.filter(x=>x.id!==id);
+    showNotif('Membre supprime');
+    renderTab(currentTab);
 }
 
-/* MENU */
-
-function showSection(id, element){
-
-    document.querySelectorAll(".section").forEach(section=>{
-        section.classList.remove("active");
-    });
-
-    document.getElementById(id).classList.add("active");
-
-    document.querySelectorAll(".menu").forEach(menu=>{
-        menu.classList.remove("active");
-    });
-
-    element.classList.add("active");
-
+function deleteOrga(id){
+    if(!confirm('Supprimer cette organisation et tous ses membres ?')) return;
+    orgas=orgas.filter(x=>x.id!==id);
+    membres=membres.filter(x=>x.orga!==id);
+    if(activeOrga===id) activeOrga=null;
+    showNotif('Organisation supprimee');
+    renderTab(currentTab);
 }
 
+// ══════════════════════════════════════════
+//  NOTIF
+// ══════════════════════════════════════════
+function showNotif(text){
+    playNotif();
+    const n=document.getElementById('notif');
+    n.innerText=text;
+    n.classList.remove('show');
+    void n.offsetWidth;
+    n.classList.add('show');
+    n.style.display='block';
+    clearTimeout(n._t);
+    n._t=setTimeout(()=>n.style.display='none',2500);
+}
+
+// ══════════════════════════════════════════
+//  DRAG
+// ══════════════════════════════════════════
+(function(){
+    const win=document.getElementById('mainWin');
+    const handle=document.getElementById('dragHandle');
+    let drag=false,sx,sy,ol,ot;
+    handle.addEventListener('mousedown',e=>{
+        drag=true;sx=e.clientX;sy=e.clientY;
+        const r=win.getBoundingClientRect();
+        ol=r.left;ot=r.top;
+        win.style.transform='none';
+        win.style.left=ol+'px';win.style.top=ot+'px';
+    });
+    document.addEventListener('mousemove',e=>{
+        if(!drag)return;
+        win.style.left=(ol+e.clientX-sx)+'px';
+        win.style.top=(ot+e.clientY-sy)+'px';
+    });
+    document.addEventListener('mouseup',()=>drag=false);
+})();
+
+// hover sons
+document.querySelectorAll('.app').forEach(a=>a.addEventListener('mouseenter',playHover));
 </script>
-
 </body>
 </html>
