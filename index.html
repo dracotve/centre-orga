@@ -6,412 +6,237 @@
 <title>OS System</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Saira+Condensed:wght@300;400;600;700&display=swap" rel="stylesheet">
 <style>
-:root{
-    --main:#dc2626;
-    --dark:#0f0f0f;
-    --dark2:#1a1a1a;
-    --dark3:#242424;
-    --dark4:#2e2e2e;
-}
-*{ box-sizing:border-box; }
-body{
-    margin:0; width:100vw; height:100vh; overflow:hidden;
-    font-family:'Saira Condensed',sans-serif;
-    background:url('https://i.imgur.com/X2VrfWW.jpeg') center/cover no-repeat;
-}
-/* ── TASKBAR ── */
-.taskbar{
-    position:fixed; top:0; width:100%; height:46px;
-    background:rgba(0,0,0,0.82); backdrop-filter:blur(12px);
-    display:flex; align-items:center; padding:0 14px; gap:10px;
-    border-bottom:1px solid rgba(255,255,255,0.06); z-index:500;
-}
-.taskbar-logo{
-    display:flex; align-items:center; gap:6px;
-    color:rgba(255,255,255,0.55); font-size:13px; letter-spacing:1px;
-}
-.taskbar-logo svg{ width:18px; height:18px; }
-.taskbar-clock{ color:rgba(255,255,255,0.7); font-size:14px; }
-.taskbar-right{ margin-left:auto; display:flex; align-items:center; gap:10px; }
+:root{ --main:#dc2626; --dark:#0f0f0f; --dark2:#1a1a1a; --dark3:#242424; --dark4:#2e2e2e; }
+*{ box-sizing:border-box; margin:0; padding:0; }
+body{ width:100vw; height:100vh; overflow:hidden; font-family:'Saira Condensed',sans-serif; background:url('https://i.imgur.com/X2VrfWW.jpeg') center/cover no-repeat; }
 
-/* bouton connexion global */
-#globalLoginBtn{
-    display:flex; align-items:center; gap:6px;
-    background:var(--main); border:none; color:white; cursor:pointer;
-    padding:6px 14px; border-radius:6px;
-    font-family:'Saira Condensed',sans-serif; font-size:14px; font-weight:700;
-    letter-spacing:0.5px; transition:background 0.2s;
-}
+/* TASKBAR */
+.taskbar{ position:fixed; top:0; width:100%; height:46px; background:rgba(0,0,0,0.85); backdrop-filter:blur(12px); display:flex; align-items:center; padding:0 14px; gap:10px; border-bottom:1px solid rgba(255,255,255,0.06); z-index:500; }
+.tb-logo{ display:flex; align-items:center; gap:6px; color:rgba(255,255,255,0.5); font-size:13px; letter-spacing:1px; }
+.tb-logo svg{ width:17px; height:17px; }
+.tb-clock{ color:rgba(255,255,255,0.65); font-size:13px; }
+.tb-right{ margin-left:auto; display:flex; align-items:center; gap:8px; }
+#globalLoginBtn{ display:flex; align-items:center; gap:6px; background:var(--main); border:none; color:white; cursor:pointer; padding:6px 13px; border-radius:6px; font-family:'Saira Condensed',sans-serif; font-size:13px; font-weight:700; transition:background 0.2s; }
 #globalLoginBtn:hover{ background:#b91c1c; }
-#globalLoginBtn svg{ width:15px; height:15px; }
-
-/* info user connecte */
-#userBadge{
-    display:none; align-items:center; gap:8px;
-    background:rgba(255,255,255,0.07); padding:5px 12px;
-    border-radius:6px; color:white; font-size:13px;
-}
-#userBadge .badge-avatar{
-    width:26px; height:26px; border-radius:50%; background:var(--main);
-    display:flex; align-items:center; justify-content:center;
-}
-#userBadge .badge-avatar svg{ width:14px; height:14px; }
-#logoutGlobal{
-    background:none; border:1px solid rgba(255,255,255,0.2); color:rgba(255,255,255,0.6);
-    padding:3px 8px; border-radius:4px; cursor:pointer; font-size:12px;
-    font-family:'Saira Condensed',sans-serif; transition:0.2s;
-}
+#globalLoginBtn svg{ width:14px; height:14px; }
+#userBadge{ display:none; align-items:center; gap:8px; background:rgba(255,255,255,0.07); padding:5px 11px; border-radius:6px; color:white; font-size:13px; }
+.badge-av{ width:24px; height:24px; border-radius:50%; background:var(--main); display:flex; align-items:center; justify-content:center; }
+.badge-av svg{ width:13px; height:13px; }
+#logoutGlobal{ background:none; border:1px solid rgba(255,255,255,0.2); color:rgba(255,255,255,0.55); padding:3px 8px; border-radius:4px; cursor:pointer; font-size:11px; font-family:'Saira Condensed',sans-serif; transition:0.2s; }
 #logoutGlobal:hover{ border-color:var(--main); color:var(--main); }
 
-/* ── DESKTOP ── */
-.desktop{ position:fixed; top:46px; width:100%; height:calc(100vh - 91px); }
-
-/* ── APP ICONS ── */
-.app{
-    position:absolute; width:90px; text-align:center;
-    color:white; cursor:pointer; transition:0.2s; user-select:none;
-}
+/* DESKTOP */
+.desktop{ position:fixed; top:46px; width:100%; height:calc(100vh - 46px); }
+.app{ position:absolute; width:88px; text-align:center; color:white; cursor:pointer; transition:0.2s; user-select:none; }
 .app:hover{ transform:scale(1.1); }
-.app-icon{
-    width:70px; height:70px; background:rgba(0,0,0,0.6);
-    border-radius:12px; display:flex; align-items:center;
-    justify-content:center; margin:auto;
-    border:1px solid rgba(255,255,255,0.1);
-}
-.app-icon svg{ width:34px; height:34px; }
-.app p{ margin:5px 0 0; font-size:13px; text-shadow:0 1px 3px black; }
+.app-icon{ width:68px; height:68px; background:rgba(0,0,0,0.6); border-radius:12px; display:flex; align-items:center; justify-content:center; margin:auto; border:1px solid rgba(255,255,255,0.1); }
+.app-icon svg{ width:32px; height:32px; }
+.app p{ margin:5px 0 0; font-size:12px; text-shadow:0 1px 3px black; }
 
-/* ── WINDOW ── */
-.window{
-    position:fixed; width:920px; max-width:96vw;
-    height:620px; max-height:88vh;
-    background:rgba(10,10,10,0.97); border-radius:14px;
-    overflow:hidden; display:none;
-    top:50%; left:50%;
-    transform:translate(-50%,-50%) scale(0.9);
-    opacity:0; transition:0.25s ease;
-    border:1px solid rgba(255,255,255,0.08); z-index:200;
-}
+/* WINDOW */
+.window{ position:fixed; width:960px; max-width:97vw; height:640px; max-height:90vh; background:rgba(10,10,10,0.97); border-radius:14px; overflow:hidden; display:none; top:50%; left:50%; transform:translate(-50%,-50%) scale(0.9); opacity:0; transition:0.25s ease; border:1px solid rgba(255,255,255,0.08); z-index:200; }
 .window.active{ transform:translate(-50%,-50%) scale(1); opacity:1; display:block; }
+.win-hdr{ height:48px; background:var(--dark2); display:flex; justify-content:space-between; align-items:center; padding:0 14px; cursor:move; user-select:none; border-bottom:1px solid rgba(255,255,255,0.05); flex-shrink:0; }
+.win-hdr h3{ color:white; font-size:16px; letter-spacing:1px; }
+.win-controls{ display:flex; gap:7px; }
+.win-btn{ width:13px; height:13px; border-radius:50%; cursor:pointer; border:none; outline:none; }
+.btn-close{ background:#ff5f57; } .btn-min{ background:#febc2e; } .btn-max{ background:#28c840; }
+.win-body{ display:flex; height:calc(100% - 48px); }
 
-.win-header{
-    height:50px; background:var(--dark2);
-    display:flex; justify-content:space-between; align-items:center;
-    padding:0 14px; cursor:move; user-select:none;
-    border-bottom:1px solid rgba(255,255,255,0.05);
-}
-.win-header h3{ color:white; font-size:17px; margin:0; letter-spacing:1px; }
-.win-controls{ display:flex; gap:8px; }
-.win-btn{ width:14px; height:14px; border-radius:50%; cursor:pointer; border:none; outline:none; }
-.btn-close{ background:#ff5f57; }
-.btn-min{ background:#febc2e; }
-.btn-max{ background:#28c840; }
+/* SIDEBAR */
+.win-sb{ width:195px; min-width:195px; background:var(--dark2); border-right:1px solid rgba(255,255,255,0.05); display:flex; flex-direction:column; padding:12px 0; overflow-y:auto; }
+.sb-item{ display:flex; align-items:center; gap:9px; padding:9px 15px; color:rgba(255,255,255,0.55); cursor:pointer; transition:0.15s; font-size:13px; white-space:nowrap; }
+.sb-item svg{ width:15px; height:15px; flex-shrink:0; }
+.sb-item:hover{ background:rgba(255,255,255,0.05); color:white; }
+.sb-item.active{ background:rgba(220,38,38,0.15); color:var(--main); border-left:3px solid var(--main); }
+.sb-sep{ height:1px; background:rgba(255,255,255,0.05); margin:8px 12px; }
+.sb-label{ font-size:10px; color:rgba(255,255,255,0.25); padding:6px 15px 2px; letter-spacing:1px; }
 
-/* ── WIN BODY (sidebar + content) ── */
-.win-body{ display:flex; height:calc(100% - 50px); }
+/* MAIN */
+.win-main{ flex:1; overflow-y:auto; padding:18px 20px; color:white; }
 
-/* sidebar */
-.win-sidebar{
-    width:200px; min-width:200px; background:var(--dark2);
-    border-right:1px solid rgba(255,255,255,0.05);
-    display:flex; flex-direction:column; padding:14px 0;
-}
-.sidebar-item{
-    display:flex; align-items:center; gap:10px;
-    padding:10px 16px; color:rgba(255,255,255,0.6);
-    cursor:pointer; transition:0.15s; font-size:14px;
-}
-.sidebar-item svg{ width:16px; height:16px; flex-shrink:0; }
-.sidebar-item:hover{ background:rgba(255,255,255,0.05); color:white; }
-.sidebar-item.active{ background:rgba(220,38,38,0.15); color:var(--main); border-left:3px solid var(--main); }
+/* SECTION TITLE */
+.sec-title{ font-family:'Bebas Neue',sans-serif; font-size:20px; letter-spacing:2px; color:white; margin-bottom:14px; display:flex; align-items:center; gap:8px; }
+.sec-title svg{ width:20px; height:20px; color:var(--main); }
 
-/* main content area */
-.win-main{
-    flex:1; overflow-y:auto; padding:20px;
-    color:white;
-}
+/* BREADCRUMB */
+.bc{ display:flex; align-items:center; gap:5px; font-size:12px; color:rgba(255,255,255,0.35); margin-bottom:14px; }
+.bc span{ cursor:pointer; transition:0.15s; }
+.bc span:hover{ color:white; }
+.bc .sep{ opacity:0.3; }
+.bc .cur{ color:white; cursor:default; }
 
-/* ── OVERLAY LOGIN MODAL ── */
-#loginModal{
-    position:fixed; inset:0; background:rgba(0,0,0,0.75);
-    display:none; align-items:center; justify-content:center; z-index:1000;
-    backdrop-filter:blur(4px);
-}
-#loginModal.open{ display:flex; }
-.modal-box{
-    background:#111; border:1px solid rgba(255,255,255,0.1);
-    border-radius:14px; padding:30px; width:320px;
-    display:flex; flex-direction:column; gap:12px;
-}
-.modal-box h2{
-    margin:0 0 6px; font-family:'Bebas Neue',sans-serif;
-    font-size:26px; letter-spacing:2px; color:var(--main);
-}
-.modal-box input{
-    width:100%; padding:11px; background:var(--dark3);
-    border:1px solid rgba(255,255,255,0.08); color:white;
-    border-radius:6px; outline:none;
-    font-family:'Saira Condensed',sans-serif; font-size:15px;
-    transition:border 0.2s;
-}
-.modal-box input:focus{ border-color:var(--main); }
-.modal-box button{
-    width:100%; padding:11px; background:var(--main);
-    border:none; color:white; cursor:pointer; border-radius:6px;
-    font-family:'Saira Condensed',sans-serif; font-size:16px;
-    font-weight:700; letter-spacing:1px; transition:background 0.2s;
-}
-.modal-box button:hover{ background:#b91c1c; }
-.modal-hint{ font-size:12px; color:rgba(255,255,255,0.3); text-align:center; }
-.modal-close-btn{
-    background:none; border:1px solid rgba(255,255,255,0.15);
-    color:rgba(255,255,255,0.5); padding:8px; border-radius:6px;
-    cursor:pointer; font-family:'Saira Condensed',sans-serif;
-    font-size:13px; transition:0.2s;
-}
-.modal-close-btn:hover{ border-color:var(--main); color:var(--main); }
+/* ORGA LIST */
+.orga-list{ display:flex; flex-direction:column; gap:9px; }
+.orga-card{ background:var(--dark3); border-radius:10px; padding:14px 16px; border:1px solid rgba(255,255,255,0.05); display:flex; align-items:center; justify-content:space-between; cursor:pointer; transition:0.2s; }
+.orga-card:hover{ border-color:rgba(255,255,255,0.15); }
+.orga-card.selected{ border-color:var(--main); background:rgba(220,38,38,0.08); }
+.orga-card-left{ display:flex; align-items:center; gap:11px; }
+.orga-badge{ width:36px; height:36px; border-radius:8px; background:var(--main); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.orga-badge svg{ width:18px; height:18px; }
+.orga-name{ font-size:15px; font-weight:700; }
+.orga-sub{ font-size:11px; color:rgba(255,255,255,0.38); margin-top:1px; }
+.enter-btn{ background:var(--main); border:none; color:white; padding:6px 14px; border-radius:6px; cursor:pointer; font-family:'Saira Condensed',sans-serif; font-size:12px; font-weight:700; transition:0.2s; display:none; }
+.enter-btn:hover{ background:#b91c1c; }
+.orga-card.selected .enter-btn{ display:block; }
 
-/* ── ORGA LIST ── */
-.orga-list{ display:flex; flex-direction:column; gap:10px; }
-.orga-card{
-    background:var(--dark3); border-radius:10px; padding:16px 18px;
-    border:1px solid rgba(255,255,255,0.05);
-    display:flex; align-items:center; justify-content:space-between;
-    cursor:pointer; transition:0.2s;
-}
-.orga-card:hover{ border-color:var(--main); }
-.orga-card.selected{ border-color:var(--main); background:rgba(220,38,38,0.1); }
-.orga-card-left{ display:flex; align-items:center; gap:12px; }
-.orga-badge{
-    width:38px; height:38px; border-radius:8px; background:var(--main);
-    display:flex; align-items:center; justify-content:center;
-}
-.orga-badge svg{ width:20px; height:20px; }
-.orga-name{ font-size:16px; font-weight:700; }
-.orga-sub{ font-size:12px; color:rgba(255,255,255,0.4); margin-top:2px; }
-.orga-enter-btn{
-    background:var(--main); border:none; color:white;
-    padding:7px 16px; border-radius:6px; cursor:pointer;
-    font-family:'Saira Condensed',sans-serif; font-size:13px;
-    font-weight:700; transition:0.2s; display:none;
-}
-.orga-enter-btn:hover{ background:#b91c1c; }
-.orga-card.selected .orga-enter-btn{ display:block; }
+/* ORGA TABS (interieur) */
+.orga-tabs{ display:flex; gap:0; border-bottom:1px solid rgba(255,255,255,0.07); margin-bottom:18px; }
+.otab{ padding:8px 18px; font-size:13px; color:rgba(255,255,255,0.45); cursor:pointer; border-bottom:2px solid transparent; transition:0.15s; }
+.otab:hover{ color:white; }
+.otab.active{ color:var(--main); border-bottom-color:var(--main); }
 
-/* section title */
-.section-title{
-    font-family:'Bebas Neue',sans-serif; font-size:22px;
-    letter-spacing:2px; color:white; margin:0 0 16px;
-    display:flex; align-items:center; gap:10px;
-}
-.section-title svg{ width:22px; height:22px; color:var(--main); }
-
-/* breadcrumb */
-.breadcrumb{
-    display:flex; align-items:center; gap:6px;
-    font-size:13px; color:rgba(255,255,255,0.4); margin-bottom:16px;
-}
-.breadcrumb span{ cursor:pointer; transition:0.15s; }
-.breadcrumb span:hover{ color:white; }
-.breadcrumb .sep{ opacity:0.3; }
-.breadcrumb .current{ color:white; cursor:default; }
-
-/* ── CARTES ID ── */
-.id-cards-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:14px; }
-.id-card{
-    background:linear-gradient(135deg,#1e1e1e,#2a2a2a);
-    border:1px solid rgba(255,255,255,0.08); border-radius:12px;
-    padding:16px; position:relative; overflow:hidden;
-    transition:border 0.2s; cursor:pointer;
-}
-.id-card::before{
-    content:''; position:absolute; top:0; left:0; right:0; height:3px;
-    background:var(--main);
-}
+/* ID CARDS */
+.id-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
+.id-card{ background:linear-gradient(135deg,#1c1c1c,#252525); border:1px solid rgba(255,255,255,0.07); border-radius:11px; padding:14px; position:relative; overflow:hidden; transition:border 0.2s; cursor:pointer; }
+.id-card::before{ content:''; position:absolute; top:0; left:0; right:0; height:3px; background:var(--main); }
 .id-card:hover{ border-color:var(--main); }
-.id-card-top{ display:flex; align-items:center; gap:12px; margin-bottom:12px; }
-.id-avatar{
-    width:46px; height:46px; border-radius:50%; background:var(--main);
-    display:flex; align-items:center; justify-content:center; flex-shrink:0;
-    font-family:'Bebas Neue',sans-serif; font-size:20px; letter-spacing:1px;
-}
-.id-name{ font-size:17px; font-weight:700; }
-.id-role{ font-size:12px; color:rgba(255,255,255,0.4); }
-.id-fields{ display:flex; flex-direction:column; gap:5px; }
-.id-field{ display:flex; gap:8px; font-size:13px; }
-.id-field label{ color:rgba(255,255,255,0.4); min-width:60px; }
-.id-field span{ color:white; }
-.id-badge{
-    position:absolute; top:14px; right:14px;
-    background:rgba(220,38,38,0.2); border:1px solid var(--main);
-    color:var(--main); font-size:10px; padding:2px 7px; border-radius:4px;
-    font-weight:700; letter-spacing:0.5px;
-}
+.id-card-top{ display:flex; align-items:center; gap:11px; margin-bottom:10px; }
+.id-av{ width:42px; height:42px; border-radius:50%; background:var(--main); display:flex; align-items:center; justify-content:center; font-family:'Bebas Neue',sans-serif; font-size:18px; flex-shrink:0; }
+.id-name{ font-size:15px; font-weight:700; }
+.id-sub{ font-size:11px; color:rgba(255,255,255,0.38); }
+.id-fields{ display:flex; flex-direction:column; gap:4px; }
+.id-field{ display:flex; gap:7px; font-size:12px; }
+.id-field label{ color:rgba(255,255,255,0.38); min-width:55px; }
+.id-badge{ position:absolute; top:12px; right:12px; background:rgba(220,38,38,0.18); border:1px solid rgba(220,38,38,0.5); color:var(--main); font-size:9px; padding:2px 6px; border-radius:4px; font-weight:700; letter-spacing:0.5px; }
 
-/* ── ADMIN PANEL ORGA ── */
-.admin-orga-row{
-    background:var(--dark3); border-radius:8px; padding:12px 16px;
-    display:flex; align-items:center; justify-content:space-between;
-    border:1px solid rgba(255,255,255,0.05); margin-bottom:8px;
-}
-.admin-orga-row:hover{ border-color:rgba(255,255,255,0.15); }
-.admin-btn{
-    padding:5px 12px; border-radius:5px; cursor:pointer;
-    font-family:'Saira Condensed',sans-serif; font-size:13px; border:none;
-    transition:0.2s;
-}
-.admin-btn.edit{ background:rgba(255,255,255,0.1); color:white; }
-.admin-btn.edit:hover{ background:rgba(255,255,255,0.2); }
-.admin-btn.del{ background:rgba(220,38,38,0.2); color:var(--main); }
-.admin-btn.del:hover{ background:var(--main); color:white; }
-.admin-btn-add{
-    display:flex; align-items:center; gap:6px;
-    background:var(--main); border:none; color:white;
-    padding:8px 16px; border-radius:6px; cursor:pointer;
-    font-family:'Saira Condensed',sans-serif; font-size:14px;
-    font-weight:700; margin-bottom:16px; transition:0.2s;
-}
-.admin-btn-add:hover{ background:#b91c1c; }
-.admin-btn-add svg{ width:16px; height:16px; }
+/* GRADE BADGE */
+.grade-tag{ display:inline-block; padding:2px 8px; border-radius:4px; font-size:10px; font-weight:700; letter-spacing:0.5px; margin-left:4px; }
 
-/* ── EDIT MODAL ── */
-#editModal{
-    position:fixed; inset:0; background:rgba(0,0,0,0.7);
-    display:none; align-items:center; justify-content:center; z-index:1100;
-    backdrop-filter:blur(4px);
-}
-#editModal.open{ display:flex; }
-.edit-box{
-    background:#111; border:1px solid rgba(255,255,255,0.1);
-    border-radius:14px; padding:28px; width:360px;
-    display:flex; flex-direction:column; gap:10px;
-}
-.edit-box h3{
-    margin:0 0 6px; font-family:'Bebas Neue',sans-serif;
-    font-size:22px; letter-spacing:2px; color:var(--main);
-}
-.edit-box input, .edit-box select{
-    width:100%; padding:10px; background:var(--dark3);
-    border:1px solid rgba(255,255,255,0.08); color:white;
-    border-radius:6px; outline:none;
-    font-family:'Saira Condensed',sans-serif; font-size:14px;
-}
-.edit-box input:focus, .edit-box select:focus{ border-color:var(--main); }
-.edit-box select option{ background:#222; }
-.edit-row{ display:flex; gap:8px; }
-.edit-row button{
-    flex:1; padding:10px; border:none; cursor:pointer; border-radius:6px;
-    font-family:'Saira Condensed',sans-serif; font-size:14px; font-weight:700;
-}
-.edit-save{ background:var(--main); color:white; }
-.edit-save:hover{ background:#b91c1c; }
-.edit-cancel{ background:var(--dark4); color:rgba(255,255,255,0.6); }
-.edit-cancel:hover{ background:var(--dark3); }
+/* INFO / CHAT / OPERATIONS */
+.info-block{ background:var(--dark3); border-radius:10px; padding:16px; border:1px solid rgba(255,255,255,0.05); margin-bottom:12px; }
+.info-block h4{ font-size:14px; color:rgba(255,255,255,0.7); margin-bottom:8px; }
+.info-block p{ font-size:13px; color:rgba(255,255,255,0.5); line-height:1.6; }
+.info-edit-btn{ background:none; border:1px solid rgba(255,255,255,0.15); color:rgba(255,255,255,0.5); padding:4px 10px; border-radius:5px; cursor:pointer; font-size:11px; font-family:'Saira Condensed',sans-serif; transition:0.2s; float:right; }
+.info-edit-btn:hover{ border-color:var(--main); color:var(--main); }
 
-/* ── LOCKED overlay ── */
-.locked-overlay{
-    display:flex; flex-direction:column; align-items:center;
-    justify-content:center; height:100%; gap:14px; color:rgba(255,255,255,0.5);
-    text-align:center;
-}
-.locked-overlay svg{ width:48px; height:48px; opacity:0.3; }
-.locked-overlay p{ margin:0; font-size:15px; }
-.locked-overlay button{
-    background:var(--main); border:none; color:white;
-    padding:9px 20px; border-radius:6px; cursor:pointer;
-    font-family:'Saira Condensed',sans-serif; font-size:15px;
-    font-weight:700; transition:0.2s;
-}
-.locked-overlay button:hover{ background:#b91c1c; }
+/* CHAT */
+.chat-wrap{ display:flex; flex-direction:column; height:380px; }
+.chat-msgs{ flex:1; overflow-y:auto; display:flex; flex-direction:column; gap:8px; padding:4px 0 10px; }
+.chat-msg{ display:flex; flex-direction:column; gap:2px; }
+.chat-msg .author{ font-size:11px; color:rgba(255,255,255,0.35); }
+.chat-msg .author span{ color:var(--main); }
+.chat-msg .bubble{ background:var(--dark3); border-radius:8px; padding:8px 12px; font-size:13px; color:rgba(255,255,255,0.85); max-width:90%; border:1px solid rgba(255,255,255,0.05); }
+.chat-msg.mine .bubble{ background:rgba(220,38,38,0.18); border-color:rgba(220,38,38,0.3); align-self:flex-end; }
+.chat-msg.mine .author{ align-self:flex-end; }
+.chat-input-row{ display:flex; gap:8px; margin-top:8px; }
+.chat-input{ flex:1; padding:9px 12px; background:var(--dark3); border:1px solid rgba(255,255,255,0.08); color:white; border-radius:7px; outline:none; font-family:'Saira Condensed',sans-serif; font-size:13px; transition:border 0.2s; }
+.chat-input:focus{ border-color:var(--main); }
+.chat-send{ background:var(--main); border:none; color:white; padding:0 16px; border-radius:7px; cursor:pointer; font-size:18px; transition:background 0.2s; }
+.chat-send:hover{ background:#b91c1c; }
 
-/* ── NOTIF ── */
-#notif{
-    position:fixed; top:56px; right:16px;
-    background:#111; color:white; padding:10px 15px;
-    display:none; border-left:4px solid var(--main);
-    border-radius:6px; font-size:14px; z-index:2000;
-}
+/* OPERATIONS */
+.op-list{ display:flex; flex-direction:column; gap:9px; }
+.op-card{ background:var(--dark3); border-radius:9px; padding:13px 15px; border:1px solid rgba(255,255,255,0.05); display:flex; justify-content:space-between; align-items:flex-start; gap:10px; }
+.op-title{ font-size:14px; font-weight:700; margin-bottom:3px; }
+.op-desc{ font-size:12px; color:rgba(255,255,255,0.42); }
+.op-status{ font-size:10px; padding:3px 8px; border-radius:4px; font-weight:700; white-space:nowrap; }
+.op-status.active{ background:rgba(34,197,94,0.15); color:#22c55e; border:1px solid rgba(34,197,94,0.3); }
+.op-status.pending{ background:rgba(234,179,8,0.15); color:#eab308; border:1px solid rgba(234,179,8,0.3); }
+.op-status.done{ background:rgba(255,255,255,0.08); color:rgba(255,255,255,0.35); border:1px solid rgba(255,255,255,0.1); }
+.op-del{ background:none; border:none; color:rgba(255,255,255,0.25); cursor:pointer; font-size:16px; padding:0 2px; transition:0.15s; }
+.op-del:hover{ color:var(--main); }
+
+/* ADMIN ROWS */
+.admin-row{ background:var(--dark3); border-radius:8px; padding:11px 14px; display:flex; align-items:center; justify-content:space-between; border:1px solid rgba(255,255,255,0.04); margin-bottom:7px; }
+.admin-row:hover{ border-color:rgba(255,255,255,0.1); }
+.abtn{ padding:4px 10px; border-radius:5px; cursor:pointer; font-family:'Saira Condensed',sans-serif; font-size:12px; border:none; transition:0.2s; margin-left:5px; }
+.abtn.edit{ background:rgba(255,255,255,0.1); color:white; }
+.abtn.edit:hover{ background:rgba(255,255,255,0.18); }
+.abtn.del{ background:rgba(220,38,38,0.18); color:var(--main); }
+.abtn.del:hover{ background:var(--main); color:white; }
+.add-btn{ display:inline-flex; align-items:center; gap:6px; background:var(--main); border:none; color:white; padding:7px 14px; border-radius:6px; cursor:pointer; font-family:'Saira Condensed',sans-serif; font-size:13px; font-weight:700; margin-bottom:14px; transition:0.2s; }
+.add-btn:hover{ background:#b91c1c; }
+.add-btn svg{ width:14px; height:14px; }
+
+/* LOCKED */
+.locked-wrap{ display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%; gap:12px; color:rgba(255,255,255,0.4); text-align:center; }
+.locked-wrap svg{ width:44px; height:44px; opacity:0.25; }
+.locked-wrap p{ font-size:14px; }
+.locked-wrap button{ background:var(--main); border:none; color:white; padding:8px 18px; border-radius:6px; cursor:pointer; font-family:'Saira Condensed',sans-serif; font-size:14px; font-weight:700; transition:0.2s; }
+.locked-wrap button:hover{ background:#b91c1c; }
+
+/* IN DEV */
+.indev-wrap{ display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%; gap:16px; color:rgba(255,255,255,0.55); text-align:center; }
+.stop-sign{ width:90px; height:90px; background:#dc2626; border-radius:50%; display:flex; align-items:center; justify-content:center; border:6px solid #991b1b; }
+.stop-sign svg{ width:50px; height:50px; }
+.indev-wrap h2{ font-family:'Bebas Neue',sans-serif; font-size:28px; letter-spacing:3px; color:var(--main); }
+.indev-wrap p{ font-size:13px; color:rgba(255,255,255,0.35); }
+
+/* MODALS */
+.modal-bg{ position:fixed; inset:0; background:rgba(0,0,0,0.75); display:none; align-items:center; justify-content:center; z-index:1000; backdrop-filter:blur(4px); }
+.modal-bg.open{ display:flex; }
+.mbox{ background:#0e0e0e; border:1px solid rgba(255,255,255,0.1); border-radius:13px; padding:26px; width:340px; display:flex; flex-direction:column; gap:10px; }
+.mbox h2{ font-family:'Bebas Neue',sans-serif; font-size:24px; letter-spacing:2px; color:var(--main); margin-bottom:4px; }
+.mbox h3{ font-family:'Bebas Neue',sans-serif; font-size:20px; letter-spacing:2px; color:var(--main); margin-bottom:2px; }
+.mbox input, .mbox select, .mbox textarea{ width:100%; padding:10px; background:var(--dark3); border:1px solid rgba(255,255,255,0.08); color:white; border-radius:6px; outline:none; font-family:'Saira Condensed',sans-serif; font-size:14px; transition:border 0.2s; resize:none; }
+.mbox input:focus, .mbox select:focus, .mbox textarea:focus{ border-color:var(--main); }
+.mbox select option{ background:#1a1a1a; }
+.mbox .row{ display:flex; gap:8px; }
+.mbox .row button{ flex:1; padding:9px; border:none; cursor:pointer; border-radius:6px; font-family:'Saira Condensed',sans-serif; font-size:14px; font-weight:700; }
+.btn-ok{ background:var(--main); color:white; }
+.btn-ok:hover{ background:#b91c1c; }
+.btn-cancel{ background:var(--dark4); color:rgba(255,255,255,0.55); }
+.btn-cancel:hover{ background:var(--dark3); color:white; }
+.mhint{ font-size:11px; color:rgba(255,255,255,0.28); text-align:center; }
+.mbtn-link{ background:none; border:1px solid rgba(255,255,255,0.12); color:rgba(255,255,255,0.45); padding:7px; border-radius:6px; cursor:pointer; font-family:'Saira Condensed',sans-serif; font-size:12px; transition:0.2s; }
+.mbtn-link:hover{ border-color:var(--main); color:var(--main); }
+.mlabel{ font-size:12px; color:rgba(255,255,255,0.38); }
+
+/* NOTIF */
+#notif{ position:fixed; top:54px; right:14px; background:#111; color:white; padding:9px 14px; display:none; border-left:4px solid var(--main); border-radius:6px; font-size:13px; z-index:2000; }
 #notif.show{ animation:slideIn 0.3s ease; }
-@keyframes slideIn{
-    from{ transform:translateX(40px); opacity:0; }
-    to{ transform:translateX(0); opacity:1; }
-}
-@keyframes shake{
-    0%,100%{ transform:translateX(0); }
-    20%{ transform:translateX(-8px); }
-    40%{ transform:translateX(8px); }
-    60%{ transform:translateX(-5px); }
-    80%{ transform:translateX(5px); }
-}
-.shake{ animation:shake 0.4s ease; }
+@keyframes slideIn{ from{transform:translateX(40px);opacity:0;} to{transform:translateX(0);opacity:1;} }
+@keyframes shake{ 0%,100%{transform:translateX(0);} 20%{transform:translateX(-7px);} 40%{transform:translateX(7px);} 60%{transform:translateX(-4px);} 80%{transform:translateX(4px);} }
+.shake{ animation:shake 0.35s ease; }
+
+/* GRADE COLORS */
+.gc-chef{ background:rgba(234,179,8,0.18); color:#eab308; border:1px solid rgba(234,179,8,0.35); }
+.gc-bras-droit{ background:rgba(168,85,247,0.18); color:#a855f7; border:1px solid rgba(168,85,247,0.35); }
+.gc-membre{ background:rgba(255,255,255,0.08); color:rgba(255,255,255,0.5); border:1px solid rgba(255,255,255,0.12); }
 </style>
 </head>
 <body>
 
-<!-- ── TASKBAR ── -->
+<!-- TASKBAR -->
 <div class="taskbar">
-    <div class="taskbar-logo">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
-            <rect x="2" y="3" width="20" height="14" rx="2"/>
-            <path d="M8 21h8M12 17v4"/>
-        </svg>
+    <div class="tb-logo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
         OS SYSTEM
     </div>
-    <div class="taskbar-right">
-        <div class="taskbar-clock" id="clock">00:00</div>
-        <!-- bouton connexion -->
+    <div class="tb-clock" id="clock">00:00</div>
+    <div class="tb-right">
         <button id="globalLoginBtn" onclick="openLoginModal()">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4"/>
-                <polyline points="10 17 15 12 10 7"/>
-                <line x1="15" y1="12" x2="3" y2="12"/>
-            </svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
             Se connecter
         </button>
-        <!-- badge utilisateur connecte -->
         <div id="userBadge">
-            <div class="badge-avatar">
-                <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
-                    <circle cx="12" cy="7" r="4"/>
-                </svg>
-            </div>
-            <span id="badgeName">admin</span>
+            <div class="badge-av"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+            <span id="badgeName"></span>
             <button id="logoutGlobal" onclick="doGlobalLogout()">Deconnexion</button>
         </div>
     </div>
 </div>
 
-<!-- ── DESKTOP ── -->
+<!-- DESKTOP -->
 <div class="desktop">
-
     <div class="app" style="top:30px;left:40px;" onclick="openWin('org')">
         <div class="app-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="3" y="3" width="18" height="18" rx="2"/>
-                <line x1="9" y1="3" x2="9" y2="21"/>
-                <line x1="15" y1="3" x2="15" y2="21"/>
-                <line x1="3" y1="9" x2="21" y2="9"/>
-                <line x1="3" y1="15" x2="21" y2="15"/>
-            </svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/></svg>
         </div>
         <p>Organisations</p>
     </div>
-
-    <div class="app" style="top:30px;left:150px;" onclick="openWin('fichiers')">
+    <div class="app" style="top:30px;left:148px;" onclick="openWin('fichiers')">
         <div class="app-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"/>
-            </svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="1.5" stroke-linecap="round"><path d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"/></svg>
         </div>
         <p>Fichiers</p>
     </div>
-
 </div>
 
-<!-- ── FENETRE PRINCIPALE ── -->
+<!-- MAIN WINDOW -->
 <div class="window" id="mainWin">
-    <div class="win-header" id="dragHandle">
+    <div class="win-hdr" id="dragHandle">
         <h3 id="winTitle">Organisations</h3>
         <div class="win-controls">
             <div class="win-btn btn-min"></div>
@@ -420,183 +245,243 @@ body{
         </div>
     </div>
     <div class="win-body">
-        <!-- sidebar -->
-        <div class="win-sidebar">
-            <div class="sidebar-item active" id="sb-orgas" onclick="showTab('orgas')">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="3" y="3" width="18" height="18" rx="2"/>
-                    <line x1="9" y1="3" x2="9" y2="21"/>
-                    <line x1="3" y1="9" x2="21" y2="9"/>
-                </svg>
-                Organisations
-            </div>
-            <div class="sidebar-item" id="sb-cartes" onclick="showTab('cartes')">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="2" y="5" width="20" height="14" rx="2"/>
-                    <line x1="2" y1="10" x2="22" y2="10"/>
-                </svg>
-                Cartes ID
-            </div>
-            <div class="sidebar-item" id="sb-admin" onclick="showTab('admin')">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="3"/>
-                    <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/>
-                </svg>
-                Administration
-            </div>
-        </div>
-        <!-- contenu -->
+        <div class="win-sb" id="winSidebar"></div>
         <div class="win-main" id="winMain"></div>
     </div>
 </div>
 
-<!-- ── LOGIN MODAL ── -->
-<div id="loginModal">
-    <div class="modal-box">
+<!-- LOGIN MODAL -->
+<div class="modal-bg" id="loginModal">
+    <div class="mbox">
         <h2>Connexion</h2>
         <input id="mUser" placeholder="Nom d'utilisateur">
         <input id="mPass" type="password" placeholder="Mot de passe">
-        <button onclick="doGlobalLogin()">Se connecter</button>
-        <p class="modal-hint">admin / admin123</p>
-        <button class="modal-close-btn" onclick="closeLoginModal()">Annuler</button>
+        <div class="row">
+            <button class="btn-cancel mbtn-link" onclick="closeLoginModal()">Annuler</button>
+            <button class="btn-ok" onclick="doGlobalLogin()">Se connecter</button>
+        </div>
+        <p class="mhint">admin / admin123</p>
     </div>
 </div>
 
-<!-- ── EDIT MODAL ── -->
-<div id="editModal">
-    <div class="edit-box">
-        <h3 id="editTitle">Modifier</h3>
-        <input id="editNom" placeholder="Nom du joueur">
-        <input id="editRole" placeholder="Role (ex: Chef, Membre...)">
-        <input id="editInfo" placeholder="Info supplementaire">
-        <select id="editOrga"></select>
-        <div class="edit-row">
-            <button class="edit-cancel" onclick="closeEditModal()">Annuler</button>
-            <button class="edit-save" onclick="saveEdit()">Sauvegarder</button>
+<!-- EDIT MEMBRE MODAL -->
+<div class="modal-bg" id="membreModal">
+    <div class="mbox">
+        <h3 id="membreModalTitle">Ajouter un membre</h3>
+        <input id="mNom" placeholder="Nom du joueur">
+        <input id="mMdp" placeholder="Mot de passe du membre" type="password">
+        <div id="mGradeWrap">
+            <p class="mlabel">Grade dans l'organisation</p>
+            <select id="mGrade"></select>
+        </div>
+        <input id="mInfo" placeholder="Info supplementaire">
+        <div id="mOrgaWrap">
+            <p class="mlabel">Organisation</p>
+            <select id="mOrga"></select>
+        </div>
+        <div class="row">
+            <button class="btn-cancel" onclick="document.getElementById('membreModal').classList.remove('open')">Annuler</button>
+            <button class="btn-ok" onclick="saveMembre()">Sauvegarder</button>
         </div>
     </div>
 </div>
 
-<!-- NOTIF -->
+<!-- EDIT ORGA MODAL -->
+<div class="modal-bg" id="orgaModal">
+    <div class="mbox">
+        <h3 id="orgaModalTitle">Nouvelle organisation</h3>
+        <input id="oNom" placeholder="Nom de l'organisation">
+        <input id="oDesc" placeholder="Description">
+        <div class="row">
+            <button class="btn-cancel" onclick="document.getElementById('orgaModal').classList.remove('open')">Annuler</button>
+            <button class="btn-ok" onclick="saveOrga()">Sauvegarder</button>
+        </div>
+    </div>
+</div>
+
+<!-- GRADE MODAL -->
+<div class="modal-bg" id="gradeModal">
+    <div class="mbox">
+        <h3 id="gradeModalTitle">Nouveau grade</h3>
+        <input id="gNom" placeholder="Nom du grade (ex: Bras droit)">
+        <p class="mlabel" style="margin-top:4px;">Permissions</p>
+        <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:rgba(255,255,255,0.6);cursor:pointer;"><input type="checkbox" id="pAddMembre" style="width:auto;padding:0;background:none;border:none;"> Ajouter des membres</label>
+        <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:rgba(255,255,255,0.6);cursor:pointer;"><input type="checkbox" id="pAddOp" style="width:auto;padding:0;background:none;border:none;"> Lancer des operations</label>
+        <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:rgba(255,255,255,0.6);cursor:pointer;"><input type="checkbox" id="pEditInfo" style="width:auto;padding:0;background:none;border:none;"> Modifier les informations</label>
+        <div class="row">
+            <button class="btn-cancel" onclick="document.getElementById('gradeModal').classList.remove('open')">Annuler</button>
+            <button class="btn-ok" onclick="saveGrade()">Sauvegarder</button>
+        </div>
+    </div>
+</div>
+
+<!-- OPERATION MODAL -->
+<div class="modal-bg" id="opModal">
+    <div class="mbox">
+        <h3>Nouvelle operation</h3>
+        <input id="opTitle" placeholder="Titre de l'operation">
+        <textarea id="opDesc" rows="3" placeholder="Description..."></textarea>
+        <p class="mlabel">Statut</p>
+        <select id="opStatus">
+            <option value="pending">En attente</option>
+            <option value="active">En cours</option>
+            <option value="done">Terminee</option>
+        </select>
+        <div class="row">
+            <button class="btn-cancel" onclick="document.getElementById('opModal').classList.remove('open')">Annuler</button>
+            <button class="btn-ok" onclick="saveOp()">Lancer</button>
+        </div>
+    </div>
+</div>
+
+<!-- INFO EDIT MODAL -->
+<div class="modal-bg" id="infoModal">
+    <div class="mbox">
+        <h3>Modifier les informations</h3>
+        <textarea id="infoText" rows="6" placeholder="Informations de l'organisation..."></textarea>
+        <div class="row">
+            <button class="btn-cancel" onclick="document.getElementById('infoModal').classList.remove('open')">Annuler</button>
+            <button class="btn-ok" onclick="saveInfo()">Sauvegarder</button>
+        </div>
+    </div>
+</div>
+
 <div id="notif"></div>
 
 <script>
-// ══════════════════════════════════════════
-//  AUDIO
-// ══════════════════════════════════════════
+// ══════════════════════════════════════════ AUDIO
 const AC=new(window.AudioContext||window.webkitAudioContext)();
-function resume(){if(AC.state==='suspended')AC.resume();}
-function tone(f,ef,type,vol,dur,delay=0){
-    resume();
-    const o=AC.createOscillator(),g=AC.createGain();
-    o.connect(g);g.connect(AC.destination);
-    o.type=type; const t=AC.currentTime+delay;
-    o.frequency.setValueAtTime(f,t);
-    if(ef)o.frequency.exponentialRampToValueAtTime(ef,t+dur);
-    g.gain.setValueAtTime(vol,t);
-    g.gain.exponentialRampToValueAtTime(0.001,t+dur);
-    o.start(t);o.stop(t+dur);
-}
-function playClick(){tone(880,440,'sine',0.12,0.1);}
+function res(){if(AC.state==='suspended')AC.resume();}
+function tone(f,ef,type,vol,dur,d=0){res();const o=AC.createOscillator(),g=AC.createGain();o.connect(g);g.connect(AC.destination);o.type=type;const t=AC.currentTime+d;o.frequency.setValueAtTime(f,t);if(ef)o.frequency.exponentialRampToValueAtTime(ef,t+dur);g.gain.setValueAtTime(vol,t);g.gain.exponentialRampToValueAtTime(0.001,t+dur);o.start(t);o.stop(t+dur);}
+function playClick(){tone(880,440,'sine',0.1,0.1);}
 function playHover(){tone(660,660,'sine',0.04,0.06);}
-function playOpen(){tone(300,600,'sine',0.12,0.18);}
-function playClose(){tone(500,200,'sine',0.12,0.18);}
-function playError(){tone(200,100,'sawtooth',0.1,0.28);}
-function playSuccess(){[523,659,784].forEach((f,i)=>tone(f,f,'sine',0.12,0.2,i*0.1));}
+function playOpen(){tone(300,600,'sine',0.11,0.17);}
+function playClose(){tone(500,200,'sine',0.11,0.17);}
+function playError(){tone(200,100,'sawtooth',0.1,0.26);}
+function playSuccess(){[523,659,784].forEach((f,i)=>tone(f,f,'sine',0.11,0.18,i*0.1));}
 function playNotif(){tone(1000,1200,'sine',0.07,0.1);}
 
-// ══════════════════════════════════════════
-//  DONNEES
-// ══════════════════════════════════════════
-const USERS={
-    admin:{pass:'admin123',role:'admin'},
-    user1:{pass:'pass1',role:'member',orga:'test1'},
-    user2:{pass:'pass2',role:'member',orga:'test2'}
-};
+// ══════════════════════════════════════════ DONNEES
+let nextId=100;
+
+// Grades par defaut pour chaque orga
+function defaultGrades(){
+    return [
+        {id:'chef', nom:'Chef', perms:{addMembre:true, addOp:true, editInfo:true}, color:'gc-chef'},
+        {id:'bras-droit', nom:'Bras droit', perms:{addMembre:true, addOp:true, editInfo:false}, color:'gc-bras-droit'},
+        {id:'membre', nom:'Membre', perms:{addMembre:false, addOp:false, editInfo:false}, color:'gc-membre'},
+    ];
+}
 
 let orgas=[
-    {id:'test1', name:'Test 1', desc:'Organisation de test numero 1'},
-    {id:'test2', name:'Test 2', desc:'Organisation de test numero 2'},
+    {id:'test1', name:'Test 1', desc:'Organisation de test numero 1', info:'Informations de Test 1.', grades:defaultGrades(), ops:[], chat:[]},
+    {id:'test2', name:'Test 2', desc:'Organisation de test numero 2', info:'Informations de Test 2.', grades:defaultGrades(), ops:[], chat:[]},
 ];
 
+// membres: {id, nom, mdp, gradeId, orgaId, info}
 let membres=[
-    {id:1, nom:'Jean Dupont',  role:'Chef',   orga:'test1', info:'Fondateur'},
-    {id:2, nom:'Marie Martin', role:'Membre',  orga:'test1', info:'Recrue'},
-    {id:3, nom:'Paul Durand',  role:'Chef',   orga:'test2', info:'Leader'},
-    {id:4, nom:'Sara Petit',   role:'Membre',  orga:'test2', info:'Pilote'},
+    {id:1, nom:'Jean Dupont',  mdp:'jean123',  gradeId:'chef',      orgaId:'test1', info:'Fondateur'},
+    {id:2, nom:'Marie Martin', mdp:'marie123', gradeId:'bras-droit',orgaId:'test1', info:'Recrue'},
+    {id:3, nom:'Paul Durand',  mdp:'paul123',  gradeId:'chef',      orgaId:'test2', info:'Leader'},
+    {id:4, nom:'Sara Petit',   mdp:'sara123',  gradeId:'membre',    orgaId:'test2', info:'Pilote'},
 ];
 
-let nextId=10;
-let currentUser=null; // null = non connecte
-let selectedOrga=null; // orga selectionnee dans la liste
-let activeOrga=null;   // orga dans laquelle on est entre
-let currentTab='orgas';
-let editTarget=null;   // {type:'membre'|'orga', id}
-let currentWin=null;
+// Comptes systeme : admin global + membres qui peuvent se co
+// Le login cherche d'abord dans ACCOUNTS puis dans membres
+const SYS_ACCOUNTS={admin:{pass:'admin123', role:'admin'}};
 
-// ══════════════════════════════════════════
-//  HORLOGE
-// ══════════════════════════════════════════
-function updateClock(){
-    const n=new Date();
-    document.getElementById('clock').innerText=
-        String(n.getHours()).padStart(2,'0')+':'+String(n.getMinutes()).padStart(2,'0');
-}
+let currentUser=null; // {name, role:'admin'|'member', membreId?, orgaId?}
+let selectedOrgaId=null;
+let activeOrgaId=null;
+let activeOrgaTab='info'; // info | chat | operations | membres
+let currentTab='orgas';
+let currentWin=null;
+// edit targets
+let editMembreId=null;
+let editOrgaId=null;
+let editGradeId=null;
+let editOpId=null;
+
+// ══════════════════════════════════════════ HORLOGE
+function updateClock(){const n=new Date();document.getElementById('clock').innerText=String(n.getHours()).padStart(2,'0')+':'+String(n.getMinutes()).padStart(2,'0');}
 updateClock();setInterval(updateClock,1000);
 
-// ══════════════════════════════════════════
-//  LOGIN GLOBAL
-// ══════════════════════════════════════════
-function openLoginModal(){
-    document.getElementById('loginModal').classList.add('open');
-    document.getElementById('mUser').value='';
-    document.getElementById('mPass').value='';
-}
-function closeLoginModal(){
-    document.getElementById('loginModal').classList.remove('open');
-}
+// ══════════════════════════════════════════ LOGIN
+function openLoginModal(){document.getElementById('loginModal').classList.add('open');document.getElementById('mUser').value='';document.getElementById('mPass').value='';}
+function closeLoginModal(){document.getElementById('loginModal').classList.remove('open');}
+
 function doGlobalLogin(){
     const u=document.getElementById('mUser').value.trim();
     const p=document.getElementById('mPass').value;
-    if(USERS[u]&&USERS[u].pass===p){
-        currentUser={name:u,...USERS[u]};
-        playSuccess();
-        closeLoginModal();
-        document.getElementById('globalLoginBtn').style.display='none';
-        const badge=document.getElementById('userBadge');
-        badge.style.display='flex';
-        document.getElementById('badgeName').innerText=u;
-        showNotif('Connecte : '+u);
-        if(currentWin) renderTab(currentTab);
-    } else {
-        playError();
-        const inputs=document.querySelectorAll('#loginModal input');
-        inputs.forEach(i=>{i.classList.remove('shake');void i.offsetWidth;i.classList.add('shake');});
-        showNotif('Identifiants incorrects');
+    // Compte systeme admin ?
+    if(SYS_ACCOUNTS[u] && SYS_ACCOUNTS[u].pass===p){
+        currentUser={name:u, role:'admin'};
+        loginSuccess(u);
+        return;
     }
+    // Membre ?
+    const m=membres.find(x=>x.nom.toLowerCase()===u.toLowerCase() && x.mdp===p);
+    if(m){
+        currentUser={name:m.nom, role:'member', membreId:m.id, orgaId:m.orgaId};
+        loginSuccess(m.nom);
+        return;
+    }
+    playError();
+    document.querySelectorAll('#loginModal input').forEach(i=>{i.classList.remove('shake');void i.offsetWidth;i.classList.add('shake');});
+    showNotif('Identifiants incorrects');
 }
+
+function loginSuccess(name){
+    playSuccess();
+    closeLoginModal();
+    document.getElementById('globalLoginBtn').style.display='none';
+    document.getElementById('userBadge').style.display='flex';
+    document.getElementById('badgeName').innerText=name;
+    showNotif('Connecte : '+name);
+    if(currentWin) renderAll();
+}
+
 function doGlobalLogout(){
-    currentUser=null; selectedOrga=null; activeOrga=null;
+    currentUser=null; selectedOrgaId=null; activeOrgaId=null;
     document.getElementById('globalLoginBtn').style.display='flex';
     document.getElementById('userBadge').style.display='none';
     showNotif('Deconnecte');
-    if(currentWin) renderTab(currentTab);
+    if(currentWin) renderAll();
 }
-document.getElementById('mPass').addEventListener('keydown',e=>{ if(e.key==='Enter') doGlobalLogin(); });
+document.getElementById('mPass').addEventListener('keydown',e=>{if(e.key==='Enter')doGlobalLogin();});
 
-// ══════════════════════════════════════════
-//  FENETRE
-// ══════════════════════════════════════════
+// ══════════════════════════════════════════ PERMS HELPERS
+function getMembre(){if(!currentUser||currentUser.role!=='member')return null; return membres.find(x=>x.id===currentUser.membreId)||null;}
+function getGrade(orgaId, gradeId){const o=orgas.find(x=>x.id===orgaId);if(!o)return null;return o.grades.find(g=>g.id===gradeId)||null;}
+function isAdmin(){return currentUser && currentUser.role==='admin';}
+function isChef(orgaId){
+    if(isAdmin()) return true;
+    const m=getMembre();
+    if(!m||m.orgaId!==orgaId) return false;
+    return m.gradeId==='chef';
+}
+function hasPerm(orgaId, perm){
+    if(isAdmin()) return true;
+    const m=getMembre();
+    if(!m||m.orgaId!==orgaId) return false;
+    const g=getGrade(orgaId, m.gradeId);
+    return g ? g.perms[perm] : false;
+}
+function canEnterOrga(orgaId){
+    if(isAdmin()) return true;
+    return currentUser && currentUser.role==='member' && currentUser.orgaId===orgaId;
+}
+
+// ══════════════════════════════════════════ WINDOW
 function openWin(type){
     playOpen();
     currentWin=type;
-    selectedOrga=null; activeOrga=null;
+    selectedOrgaId=null; activeOrgaId=null;
     const win=document.getElementById('mainWin');
     win.style.display='block';
     setTimeout(()=>win.classList.add('active'),10);
     currentTab='orgas';
-    updateSidebar('sb-orgas');
-    renderTab('orgas');
+    renderAll();
 }
 function closeWin(){
     playClose();
@@ -605,188 +490,278 @@ function closeWin(){
     setTimeout(()=>win.style.display='none',250);
     currentWin=null;
 }
-function showTab(tab){
+
+function renderAll(){
+    renderSidebar();
+    renderMain();
+}
+
+// ══════════════════════════════════════════ SIDEBAR
+function renderSidebar(){
+    const sb=document.getElementById('winSidebar');
+    if(currentWin==='fichiers'){sb.innerHTML='';return;}
+
+    let html='';
+    html+=sbItem('orgas','Organisations',`<rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="3" y1="9" x2="21" y2="9"/>`);
+    html+=sbItem('cartes','Cartes ID',`<rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/>`);
+    if(isAdmin()){
+        html+=`<div class="sb-sep"></div><div class="sb-label">ADMIN</div>`;
+        html+=sbItem('admin','Administration',`<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/>`);
+    }
+    sb.innerHTML=html;
+}
+
+function sbItem(tab, label, pathSvg){
+    const active=currentTab===tab?'active':'';
+    return `<div class="sb-item ${active}" onclick="switchTab('${tab}')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${pathSvg}</svg>
+        ${label}
+    </div>`;
+}
+
+function switchTab(tab){
     playClick();
     currentTab=tab;
-    updateSidebar('sb-'+tab);
-    renderTab(tab);
-}
-function updateSidebar(activeId){
-    document.querySelectorAll('.sidebar-item').forEach(el=>el.classList.remove('active'));
-    const el=document.getElementById(activeId);
-    if(el) el.classList.add('active');
+    activeOrgaId=null; selectedOrgaId=null;
+    renderAll();
 }
 
-// ══════════════════════════════════════════
-//  RENDER
-// ══════════════════════════════════════════
-function renderTab(tab){
+// ══════════════════════════════════════════ MAIN
+function renderMain(){
     const main=document.getElementById('winMain');
-    if(tab==='orgas') renderOrgas(main);
-    else if(tab==='cartes') renderCartes(main);
-    else if(tab==='admin') renderAdmin(main);
+    if(currentWin==='fichiers'){renderFichiers(main);return;}
+    if(currentTab==='orgas') renderOrgas(main);
+    else if(currentTab==='cartes') renderCartesGlobal(main);
+    else if(currentTab==='admin') renderAdmin(main);
 }
 
-/* --- ORGAS --- */
+// ── FICHIERS (EN DEV) ──
+function renderFichiers(main){
+    document.getElementById('winTitle').innerText='Fichiers';
+    main.innerHTML=`<div class="indev-wrap">
+        <div class="stop-sign">
+            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round">
+                <polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"/>
+                <line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+            </svg>
+        </div>
+        <h2>En developpement</h2>
+        <p>Cette section est en cours de creation.<br>Revenez plus tard.</p>
+    </div>`;
+}
+
+// ── ORGAS ──
 function renderOrgas(main){
-    // Si on est entre dans une orga → afficher son contenu
-    if(activeOrga){
-        renderOrgaInside(main, activeOrga);
-        return;
-    }
-    let html=`<div class="section-title">
-        <svg viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:22px;height:22px">
-            <rect x="3" y="3" width="18" height="18" rx="2"/>
-            <line x1="9" y1="3" x2="9" y2="21"/>
-            <line x1="3" y1="9" x2="21" y2="9"/>
-        </svg>
+    document.getElementById('winTitle').innerText='Organisations';
+    if(activeOrgaId){renderOrgaInside(main);return;}
+
+    let html=`<div class="sec-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="3" y1="9" x2="21" y2="9"/></svg>
         Organisations disponibles
-    </div>
-    <div class="orga-list">`;
+    </div><div class="orga-list">`;
 
     orgas.forEach(o=>{
-        const sel=selectedOrga===o.id ? 'selected':'';
-        const membCount=membres.filter(m=>m.orga===o.id).length;
-        html+=`
-        <div class="orga-card ${sel}" onclick="selectOrga('${o.id}')">
+        const cnt=membres.filter(m=>m.orgaId===o.id).length;
+        const sel=selectedOrgaId===o.id?'selected':'';
+        html+=`<div class="orga-card ${sel}" onclick="selectOrga('${o.id}')">
             <div class="orga-card-left">
-                <div class="orga-badge">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round">
-                        <rect x="3" y="3" width="18" height="18" rx="2"/>
-                        <line x1="9" y1="3" x2="9" y2="21"/>
-                        <line x1="3" y1="9" x2="21" y2="9"/>
-                    </svg>
-                </div>
+                <div class="orga-badge"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="3" y1="9" x2="21" y2="9"/></svg></div>
                 <div>
                     <div class="orga-name">${o.name}</div>
-                    <div class="orga-sub">${o.desc} &bull; ${membCount} membre${membCount>1?'s':''}</div>
+                    <div class="orga-sub">${o.desc} &bull; ${cnt} membre${cnt>1?'s':''}</div>
                 </div>
             </div>
-            <button class="orga-enter-btn" onclick="event.stopPropagation();enterOrga('${o.id}')">Entrer</button>
+            <button class="enter-btn" onclick="event.stopPropagation();enterOrga('${o.id}')">Entrer</button>
         </div>`;
     });
     html+=`</div>`;
     main.innerHTML=html;
 }
 
-function selectOrga(id){
-    playClick();
-    selectedOrga=id;
-    renderTab('orgas');
-}
+function selectOrga(id){playClick();selectedOrgaId=id;renderOrgas(document.getElementById('winMain'));}
 
 function enterOrga(id){
-    // Verifier connexion
-    if(!currentUser){ openLoginModal(); showNotif('Connexion requise'); return; }
-    // Verifier droit : admin peut tout, member seulement sa propre orga
-    if(currentUser.role!=='admin' && currentUser.orga!==id){
-        playError(); showNotif('Acces refuse'); return;
-    }
+    if(!currentUser){openLoginModal();showNotif('Connexion requise');return;}
+    if(!canEnterOrga(id)){playError();showNotif('Acces refuse');return;}
     playSuccess();
-    activeOrga=id;
-    renderTab('orgas');
+    activeOrgaId=id;
+    activeOrgaTab='info';
+    renderOrgas(document.getElementById('winMain'));
 }
 
-function renderOrgaInside(main, orgaId){
-    const o=orgas.find(x=>x.id===orgaId);
-    const membs=membres.filter(m=>m.orga===orgaId);
+function renderOrgaInside(main){
+    const o=orgas.find(x=>x.id===activeOrgaId);
+    document.getElementById('winTitle').innerText=o.name;
 
-    let html=`
-    <div class="breadcrumb">
+    const tabs=['info','chat','operations','membres'];
+    let html=`<div class="bc">
         <span onclick="exitOrga()">Organisations</span>
         <span class="sep">/</span>
-        <span class="current">${o.name}</span>
+        <span class="cur">${o.name}</span>
     </div>
-    <div class="section-title">${o.name}</div>
-    <p style="color:rgba(255,255,255,0.4);font-size:14px;margin:0 0 18px;">${o.desc}</p>
-    <div class="section-title" style="font-size:17px;margin-bottom:12px;">
-        <svg viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="1.5" stroke-linecap="round" style="width:18px;height:18px">
-            <rect x="2" y="5" width="20" height="14" rx="2"/>
-            <line x1="2" y1="10" x2="22" y2="10"/>
-        </svg>
-        Cartes ID
-    </div>
-    <div class="id-cards-grid">`;
-
-    if(membs.length===0){
-        html+=`<p style="color:rgba(255,255,255,0.35);font-size:14px;">Aucun membre dans cette organisation.</p>`;
-    }
-    membs.forEach(m=>{
-        const initials=m.nom.split(' ').map(w=>w[0]).join('').substring(0,2).toUpperCase();
-        html+=`
-        <div class="id-card" onclick="openEditMembre(${m.id})">
-            <div class="id-badge">${m.role.toUpperCase()}</div>
-            <div class="id-card-top">
-                <div class="id-avatar">${initials}</div>
-                <div>
-                    <div class="id-name">${m.nom}</div>
-                    <div class="id-role">${o.name}</div>
-                </div>
-            </div>
-            <div class="id-fields">
-                <div class="id-field"><label>Role</label><span>${m.role}</span></div>
-                <div class="id-field"><label>Info</label><span>${m.info}</span></div>
-            </div>
-        </div>`;
+    <div class="orga-tabs">`;
+    tabs.forEach(t=>{
+        const labels={info:'Informations',chat:'Chat',operations:'Operations',membres:'Membres / Cartes ID'};
+        html+=`<div class="otab ${activeOrgaTab===t?'active':''}" onclick="switchOrgaTab('${t}')">${labels[t]}</div>`;
     });
     html+=`</div>`;
 
-    if(currentUser && currentUser.role==='admin'){
-        html+=`<button class="admin-btn-add" style="margin-top:18px;" onclick="openAddMembre('${orgaId}')">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-            Ajouter un membre
-        </button>`;
-    }
+    if(activeOrgaTab==='info') html+=renderInfoTab(o);
+    else if(activeOrgaTab==='chat') html+=renderChatTab(o);
+    else if(activeOrgaTab==='operations') html+=renderOpsTab(o);
+    else if(activeOrgaTab==='membres') html+=renderMembresTab(o);
 
     main.innerHTML=html;
+
+    // bind chat input si besoin
+    if(activeOrgaTab==='chat'){
+        const inp=document.getElementById('chatInp');
+        if(inp) inp.addEventListener('keydown',e=>{if(e.key==='Enter')sendChat();});
+    }
 }
 
-function exitOrga(){
+function switchOrgaTab(t){playClick();activeOrgaTab=t;renderOrgas(document.getElementById('winMain'));}
+function exitOrga(){playClick();activeOrgaId=null;selectedOrgaId=null;renderOrgas(document.getElementById('winMain'));}
+
+// TAB INFO
+function renderInfoTab(o){
+    const canEdit=hasPerm(o.id,'editInfo');
+    return `<div class="info-block">
+        <h4>A propos de l'organisation ${canEdit?`<button class="info-edit-btn" onclick="openInfoModal('${o.id}')">Modifier</button>`:''}
+        </h4>
+        <p style="margin-top:8px;">${o.info||'Aucune information renseignee.'}</p>
+    </div>
+    <div class="info-block">
+        <h4>Grades</h4>
+        <div style="display:flex;flex-wrap:wrap;gap:7px;margin-top:8px;">
+            ${o.grades.map(g=>`<span class="grade-tag ${g.color}">${g.nom}</span>`).join('')}
+        </div>
+    </div>`;
+}
+
+// TAB CHAT
+function renderChatTab(o){
+    let msgs='';
+    if(!o.chat.length) msgs=`<p style="color:rgba(255,255,255,0.28);font-size:13px;text-align:center;margin-top:20px;">Aucun message.</p>`;
+    else o.chat.forEach(msg=>{
+        const mine=currentUser && msg.auteur===currentUser.name;
+        msgs+=`<div class="chat-msg ${mine?'mine':''}">
+            <div class="author"><span>${msg.auteur}</span> &bull; ${msg.heure}</div>
+            <div class="bubble">${msg.texte}</div>
+        </div>`;
+    });
+    return `<div class="chat-wrap">
+        <div class="chat-msgs" id="chatMsgs">${msgs}</div>
+        <div class="chat-input-row">
+            <input class="chat-input" id="chatInp" placeholder="Ecrire un message...">
+            <button class="chat-send" onclick="sendChat()">&#10148;</button>
+        </div>
+    </div>`;
+}
+
+function sendChat(){
+    if(!currentUser){showNotif('Connexion requise');return;}
+    const inp=document.getElementById('chatInp');
+    const txt=inp.value.trim();
+    if(!txt) return;
+    const o=orgas.find(x=>x.id===activeOrgaId);
+    const now=new Date();
+    o.chat.push({auteur:currentUser.name, texte:txt, heure:String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0')});
+    inp.value='';
     playClick();
-    activeOrga=null;
-    selectedOrga=null;
-    renderTab('orgas');
+    renderOrgas(document.getElementById('winMain'));
+    // scroll bas
+    setTimeout(()=>{const c=document.getElementById('chatMsgs');if(c)c.scrollTop=c.scrollHeight;},50);
 }
 
-/* --- CARTES ID (vue globale admin) --- */
-function renderCartes(main){
-    if(!currentUser){
-        main.innerHTML=lockedHTML('Connexion requise pour voir les cartes ID');
-        return;
+// TAB OPERATIONS
+function renderOpsTab(o){
+    const canAdd=hasPerm(o.id,'addOp');
+    let html='';
+    if(canAdd) html+=`<button class="add-btn" onclick="openOpModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Nouvelle operation</button>`;
+    if(!o.ops.length){html+=`<p style="color:rgba(255,255,255,0.3);font-size:13px;">Aucune operation.</p>`;return html;}
+    html+=`<div class="op-list">`;
+    o.ops.forEach(op=>{
+        const statusLabel={active:'En cours',pending:'En attente',done:'Terminee'};
+        html+=`<div class="op-card">
+            <div style="flex:1;">
+                <div class="op-title">${op.titre}</div>
+                <div class="op-desc">${op.desc}</div>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;">
+                <span class="op-status ${op.status}">${statusLabel[op.status]}</span>
+                ${isChef(o.id)?`<button class="op-del" onclick="deleteOp('${op.id}')">&#128465;</button>`:''}
+            </div>
+        </div>`;
+    });
+    html+=`</div>`;
+    return html;
+}
+
+// TAB MEMBRES / CARTES ID
+function renderMembresTab(o){
+    const canAdd=hasPerm(o.id,'addMembre');
+    let html='';
+    if(canAdd) html+=`<button class="add-btn" onclick="openMembreModal(null,'${o.id}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Ajouter un membre</button>`;
+
+    // Gestion des grades (chef uniquement)
+    if(isChef(o.id)){
+        html+=`<div style="margin-bottom:14px;">
+            <div style="font-size:12px;color:rgba(255,255,255,0.35);margin-bottom:8px;letter-spacing:1px;">GRADES</div>
+            <div style="display:flex;flex-wrap:wrap;gap:7px;align-items:center;">
+                ${o.grades.map(g=>`<span class="grade-tag ${g.color}" style="cursor:pointer;" onclick="openGradeModal('${o.id}','${g.id}')">${g.nom}</span>`).join('')}
+                <button class="add-btn" style="padding:3px 10px;font-size:11px;margin:0;" onclick="openGradeModal('${o.id}',null)">+ Grade</button>
+            </div>
+        </div>`;
     }
 
-    let visibleMembs;
-    if(currentUser.role==='admin'){
-        visibleMembs=membres;
-    } else {
-        visibleMembs=membres.filter(m=>m.orga===currentUser.orga);
-    }
-
-    let html=`<div class="section-title">
-        <svg viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="1.5" stroke-linecap="round" style="width:22px;height:22px">
-            <rect x="2" y="5" width="20" height="14" rx="2"/>
-            <line x1="2" y1="10" x2="22" y2="10"/>
-        </svg>
-        Cartes ID ${currentUser.role==='admin'?'(toutes les organisations)':'('+getOrgaName(currentUser.orga)+')'}
-    </div>
-    <div class="id-cards-grid">`;
-
-    visibleMembs.forEach(m=>{
-        const o=orgas.find(x=>x.id===m.orga);
+    const membs=membres.filter(m=>m.orgaId===o.id);
+    if(!membs.length){html+=`<p style="color:rgba(255,255,255,0.3);font-size:13px;">Aucun membre.</p>`;return html;}
+    html+=`<div class="id-grid">`;
+    membs.forEach(m=>{
+        const grade=o.grades.find(g=>g.id===m.gradeId)||{nom:'?',color:'gc-membre'};
         const initials=m.nom.split(' ').map(w=>w[0]).join('').substring(0,2).toUpperCase();
-        html+=`
-        <div class="id-card" onclick="${currentUser.role==='admin'?'openEditMembre('+m.id+')':''}">
-            <div class="id-badge">${m.role.toUpperCase()}</div>
+        const canEdit=isAdmin()||isChef(o.id);
+        html+=`<div class="id-card" ${canEdit?`onclick="openMembreModal(${m.id},'${o.id}')"`:''}">
+            <div class="id-badge">${grade.nom.toUpperCase()}</div>
             <div class="id-card-top">
-                <div class="id-avatar">${initials}</div>
+                <div class="id-av">${initials}</div>
                 <div>
                     <div class="id-name">${m.nom}</div>
-                    <div class="id-role">${o?o.name:'?'}</div>
+                    <div class="id-sub"><span class="grade-tag ${grade.color}">${grade.nom}</span></div>
                 </div>
             </div>
             <div class="id-fields">
-                <div class="id-field"><label>Role</label><span>${m.role}</span></div>
-                <div class="id-field"><label>Info</label><span>${m.info}</span></div>
+                <div class="id-field"><label>Login</label><span>${m.nom}</span></div>
+                <div class="id-field"><label>Info</label><span>${m.info||'-'}</span></div>
+            </div>
+        </div>`;
+    });
+    html+=`</div>`;
+    return html;
+}
+
+// ── CARTES GLOBALES ──
+function renderCartesGlobal(main){
+    document.getElementById('winTitle').innerText='Cartes ID';
+    if(!currentUser){main.innerHTML=lockedHTML('Connexion requise pour voir les cartes ID');return;}
+    const visibles=isAdmin() ? membres : membres.filter(m=>m.orgaId===currentUser.orgaId);
+    let html=`<div class="sec-title"><svg viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="1.5" stroke-linecap="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>Cartes ID ${isAdmin()?'(tout)':''}</div><div class="id-grid">`;
+    visibles.forEach(m=>{
+        const o=orgas.find(x=>x.id===m.orgaId);
+        const grade=o?o.grades.find(g=>g.id===m.gradeId):null;
+        const gc=grade?grade.color:'gc-membre';
+        const gn=grade?grade.nom:'?';
+        const initials=m.nom.split(' ').map(w=>w[0]).join('').substring(0,2).toUpperCase();
+        html+=`<div class="id-card">
+            <div class="id-badge">${gn.toUpperCase()}</div>
+            <div class="id-card-top">
+                <div class="id-av">${initials}</div>
+                <div><div class="id-name">${m.nom}</div><div class="id-sub">${o?o.name:'?'}</div></div>
+            </div>
+            <div class="id-fields">
+                <div class="id-field"><label>Grade</label><span><span class="grade-tag ${gc}">${gn}</span></span></div>
+                <div class="id-field"><label>Info</label><span>${m.info||'-'}</span></div>
             </div>
         </div>`;
     });
@@ -794,55 +769,46 @@ function renderCartes(main){
     main.innerHTML=html;
 }
 
-/* --- ADMIN --- */
+// ── ADMIN ──
 function renderAdmin(main){
-    if(!currentUser || currentUser.role!=='admin'){
-        main.innerHTML=lockedHTML('Acces reserve aux administrateurs');
-        return;
-    }
-    let html=`<div class="section-title">
-        <svg viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="1.5" stroke-linecap="round" style="width:22px;height:22px">
-            <circle cx="12" cy="12" r="3"/>
-            <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/>
-        </svg>
-        Administration
-    </div>
+    document.getElementById('winTitle').innerText='Administration';
+    if(!isAdmin()){main.innerHTML=lockedHTML('Reserve aux administrateurs');return;}
+    let html=`<div class="sec-title"><svg viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>Administration</div>
 
-    <p style="color:rgba(255,255,255,0.5);font-size:14px;margin:0 0 14px;">Gestion des organisations</p>
-    <button class="admin-btn-add" onclick="openAddOrga()">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-        Nouvelle organisation
-    </button>`;
+    <p style="color:rgba(255,255,255,0.4);font-size:13px;margin-bottom:12px;">Gestion des organisations</p>
+    <button class="add-btn" onclick="openOrgaModal(null)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Nouvelle organisation</button>`;
 
     orgas.forEach(o=>{
-        const cnt=membres.filter(m=>m.orga===o.id).length;
-        html+=`
-        <div class="admin-orga-row">
+        const cnt=membres.filter(m=>m.orgaId===o.id).length;
+        html+=`<div class="admin-row">
             <div>
-                <div style="font-size:15px;font-weight:700;">${o.name}</div>
-                <div style="font-size:12px;color:rgba(255,255,255,0.4);">${o.desc} &bull; ${cnt} membre${cnt>1?'s':''}</div>
+                <div style="font-size:14px;font-weight:700;">${o.name}</div>
+                <div style="font-size:11px;color:rgba(255,255,255,0.35);">${o.desc} &bull; ${cnt} membre${cnt>1?'s':''}</div>
             </div>
-            <div style="display:flex;gap:8px;">
-                <button class="admin-btn edit" onclick="openEditOrga('${o.id}')">Modifier</button>
-                <button class="admin-btn del" onclick="deleteOrga('${o.id}')">Supprimer</button>
+            <div>
+                <button class="abtn edit" onclick="openOrgaModal('${o.id}')">Modifier</button>
+                <button class="abtn del" onclick="deleteOrga('${o.id}')">Supprimer</button>
             </div>
         </div>`;
     });
 
-    html+=`<hr style="border:none;border-top:1px solid rgba(255,255,255,0.06);margin:20px 0;">
-    <p style="color:rgba(255,255,255,0.5);font-size:14px;margin:0 0 14px;">Tous les membres</p>`;
+    html+=`<hr style="border:none;border-top:1px solid rgba(255,255,255,0.05);margin:16px 0;">
+    <p style="color:rgba(255,255,255,0.4);font-size:13px;margin-bottom:12px;">Tous les membres</p>
+    <button class="add-btn" onclick="openMembreModal(null,null)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Ajouter un membre</button>`;
 
     membres.forEach(m=>{
-        const o=orgas.find(x=>x.id===m.orga);
-        html+=`
-        <div class="admin-orga-row">
+        const o=orgas.find(x=>x.id===m.orgaId);
+        const grade=o?o.grades.find(g=>g.id===m.gradeId):null;
+        html+=`<div class="admin-row">
             <div>
-                <div style="font-size:15px;font-weight:700;">${m.nom} <span style="color:rgba(255,255,255,0.35);font-size:12px;font-weight:400;">— ${m.role}</span></div>
-                <div style="font-size:12px;color:rgba(255,255,255,0.4);">${o?o.name:'?'} &bull; ${m.info}</div>
+                <div style="font-size:14px;font-weight:700;">${m.nom}
+                    ${grade?`<span class="grade-tag ${grade.color}" style="margin-left:6px;">${grade.nom}</span>`:''}
+                </div>
+                <div style="font-size:11px;color:rgba(255,255,255,0.35);">${o?o.name:'?'} &bull; Login: ${m.nom} &bull; ${m.info||''}</div>
             </div>
-            <div style="display:flex;gap:8px;">
-                <button class="admin-btn edit" onclick="openEditMembre(${m.id})">Modifier</button>
-                <button class="admin-btn del" onclick="deleteMembre(${m.id})">Supprimer</button>
+            <div>
+                <button class="abtn edit" onclick="openMembreModal(${m.id},null)">Modifier</button>
+                <button class="abtn del" onclick="deleteMembre(${m.id})">Supprimer</button>
             </div>
         </div>`;
     });
@@ -851,180 +817,201 @@ function renderAdmin(main){
 }
 
 function lockedHTML(msg){
-    return `<div class="locked-overlay">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
-            <rect x="3" y="11" width="18" height="11" rx="2"/>
-            <path d="M7 11V7a5 5 0 0110 0v4"/>
-        </svg>
+    return `<div class="locked-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
         <p>${msg}</p>
         <button onclick="openLoginModal()">Se connecter</button>
     </div>`;
 }
 
-function getOrgaName(id){
-    const o=orgas.find(x=>x.id===id);
-    return o?o.name:id;
+// ══════════════════════════════════════════ MODALS
+// MEMBRE
+function openMembreModal(id, orgaId){
+    editMembreId=id;
+    document.getElementById('membreModalTitle').innerText=id?'Modifier le membre':'Ajouter un membre';
+    const m=id?membres.find(x=>x.id===id):null;
+    document.getElementById('mNom').value=m?m.nom:'';
+    document.getElementById('mMdp').value=m?m.mdp:'';
+    document.getElementById('mInfo').value=m?m.info:'';
+    // orga select
+    const oSel=document.getElementById('mOrga');
+    oSel.innerHTML='';
+    orgas.forEach(o=>{const opt=document.createElement('option');opt.value=o.id;opt.innerText=o.name;if((orgaId&&o.id===orgaId)||(m&&o.id===m.orgaId))opt.selected=true;oSel.appendChild(opt);});
+    // grade select
+    buildGradeSelect(m?m.orgaId:orgaId||orgas[0]?.id, m?m.gradeId:'membre');
+    oSel.onchange=()=>buildGradeSelect(oSel.value, document.getElementById('mGrade').value);
+    document.getElementById('membreModal').classList.add('open');
 }
 
-// ══════════════════════════════════════════
-//  EDIT MODAL
-// ══════════════════════════════════════════
-function buildOrgaSelect(selected){
-    const sel=document.getElementById('editOrga');
+function buildGradeSelect(orgaId, selected){
+    const o=orgas.find(x=>x.id===orgaId);
+    const sel=document.getElementById('mGrade');
     sel.innerHTML='';
-    orgas.forEach(o=>{
-        const opt=document.createElement('option');
-        opt.value=o.id; opt.innerText=o.name;
-        if(o.id===selected) opt.selected=true;
-        sel.appendChild(opt);
-    });
-}
-
-function openAddMembre(orgaId){
-    playClick();
-    editTarget={type:'membre',id:null};
-    document.getElementById('editTitle').innerText='Ajouter un membre';
-    document.getElementById('editNom').value='';
-    document.getElementById('editRole').value='';
-    document.getElementById('editInfo').value='';
-    document.getElementById('editOrga').style.display='block';
-    buildOrgaSelect(orgaId);
-    document.getElementById('editModal').classList.add('open');
-}
-
-function openEditMembre(id){
-    if(!currentUser || currentUser.role!=='admin'){ showNotif('Acces refuse'); return; }
-    playClick();
-    const m=membres.find(x=>x.id===id);
-    if(!m) return;
-    editTarget={type:'membre',id};
-    document.getElementById('editTitle').innerText='Modifier le membre';
-    document.getElementById('editNom').value=m.nom;
-    document.getElementById('editRole').value=m.role;
-    document.getElementById('editInfo').value=m.info;
-    document.getElementById('editOrga').style.display='block';
-    buildOrgaSelect(m.orga);
-    document.getElementById('editModal').classList.add('open');
-}
-
-function openAddOrga(){
-    playClick();
-    editTarget={type:'orga',id:null};
-    document.getElementById('editTitle').innerText='Nouvelle organisation';
-    document.getElementById('editNom').value='';
-    document.getElementById('editRole').value='';
-    document.getElementById('editInfo').value='';
-    document.getElementById('editOrga').style.display='none';
-    document.getElementById('editModal').classList.add('open');
-}
-
-function openEditOrga(id){
-    playClick();
-    const o=orgas.find(x=>x.id===id);
     if(!o) return;
-    editTarget={type:'orga',id};
-    document.getElementById('editTitle').innerText='Modifier l\'organisation';
-    document.getElementById('editNom').value=o.name;
-    document.getElementById('editRole').value=o.desc;
-    document.getElementById('editInfo').value='';
-    document.getElementById('editOrga').style.display='none';
-    document.getElementById('editModal').classList.add('open');
+    o.grades.forEach(g=>{const opt=document.createElement('option');opt.value=g.id;opt.innerText=g.nom;if(g.id===selected)opt.selected=true;sel.appendChild(opt);});
 }
 
-function closeEditModal(){
-    document.getElementById('editModal').classList.remove('open');
-    editTarget=null;
-}
-
-function saveEdit(){
-    if(!editTarget) return;
-    const nom=document.getElementById('editNom').value.trim();
-    if(!nom){ showNotif('Nom requis'); return; }
-
-    if(editTarget.type==='membre'){
-        const role=document.getElementById('editRole').value.trim()||'Membre';
-        const info=document.getElementById('editInfo').value.trim();
-        const orga=document.getElementById('editOrga').value;
-        if(editTarget.id===null){
-            membres.push({id:nextId++, nom, role, orga, info});
-            showNotif('Membre ajoute');
-        } else {
-            const m=membres.find(x=>x.id===editTarget.id);
-            if(m){m.nom=nom;m.role=role;m.info=info;m.orga=orga;}
-            showNotif('Membre mis a jour');
-        }
+function saveMembre(){
+    const nom=document.getElementById('mNom').value.trim();
+    const mdp=document.getElementById('mMdp').value.trim();
+    if(!nom){showNotif('Nom requis');return;}
+    if(!mdp){showNotif('Mot de passe requis');return;}
+    const gradeId=document.getElementById('mGrade').value;
+    const orgaId=document.getElementById('mOrga').value;
+    const info=document.getElementById('mInfo').value.trim();
+    if(editMembreId){
+        const m=membres.find(x=>x.id===editMembreId);
+        if(m){m.nom=nom;m.mdp=mdp;m.gradeId=gradeId;m.orgaId=orgaId;m.info=info;}
+        showNotif('Membre mis a jour');
     } else {
-        const desc=document.getElementById('editRole').value.trim()||'Organisation';
-        if(editTarget.id===null){
-            const newId='orga_'+nextId++;
-            orgas.push({id:newId, name:nom, desc});
-            showNotif('Organisation creee');
-        } else {
-            const o=orgas.find(x=>x.id===editTarget.id);
-            if(o){o.name=nom;o.desc=desc;}
-            showNotif('Organisation mise a jour');
-        }
+        membres.push({id:nextId++, nom, mdp, gradeId, orgaId, info});
+        showNotif('Membre ajoute — Login: '+nom+' / Mdp: '+mdp);
     }
     playSuccess();
-    closeEditModal();
-    renderTab(currentTab);
-    if(activeOrga) renderTab('orgas');
+    document.getElementById('membreModal').classList.remove('open');
+    renderAll();
+}
+
+// ORGA
+function openOrgaModal(id){
+    editOrgaId=id;
+    document.getElementById('orgaModalTitle').innerText=id?'Modifier l\'organisation':'Nouvelle organisation';
+    const o=id?orgas.find(x=>x.id===id):null;
+    document.getElementById('oNom').value=o?o.name:'';
+    document.getElementById('oDesc').value=o?o.desc:'';
+    document.getElementById('orgaModal').classList.add('open');
+}
+
+function saveOrga(){
+    const nom=document.getElementById('oNom').value.trim();
+    const desc=document.getElementById('oDesc').value.trim();
+    if(!nom){showNotif('Nom requis');return;}
+    if(editOrgaId){
+        const o=orgas.find(x=>x.id===editOrgaId);
+        if(o){o.name=nom;o.desc=desc;}
+        showNotif('Organisation mise a jour');
+    } else {
+        orgas.push({id:'orga_'+nextId++, name:nom, desc, info:'', grades:defaultGrades(), ops:[], chat:[]});
+        showNotif('Organisation creee');
+    }
+    playSuccess();
+    document.getElementById('orgaModal').classList.remove('open');
+    renderAll();
+}
+
+function deleteOrga(id){
+    if(!confirm('Supprimer cette organisation ?')) return;
+    orgas=orgas.filter(x=>x.id!==id);
+    membres=membres.filter(x=>x.orgaId!==id);
+    showNotif('Organisation supprimee');
+    renderAll();
 }
 
 function deleteMembre(id){
     if(!confirm('Supprimer ce membre ?')) return;
     membres=membres.filter(x=>x.id!==id);
     showNotif('Membre supprime');
-    renderTab(currentTab);
+    renderAll();
 }
 
-function deleteOrga(id){
-    if(!confirm('Supprimer cette organisation et tous ses membres ?')) return;
-    orgas=orgas.filter(x=>x.id!==id);
-    membres=membres.filter(x=>x.orga!==id);
-    if(activeOrga===id) activeOrga=null;
-    showNotif('Organisation supprimee');
-    renderTab(currentTab);
+// GRADE
+function openGradeModal(orgaId, gradeId){
+    if(!isChef(orgaId)){showNotif('Acces refuse');return;}
+    editGradeId=gradeId;
+    editOrgaId=orgaId;
+    const o=orgas.find(x=>x.id===orgaId);
+    const g=gradeId?o.grades.find(x=>x.id===gradeId):null;
+    document.getElementById('gradeModalTitle').innerText=gradeId?'Modifier le grade':'Nouveau grade';
+    document.getElementById('gNom').value=g?g.nom:'';
+    document.getElementById('pAddMembre').checked=g?g.perms.addMembre:false;
+    document.getElementById('pAddOp').checked=g?g.perms.addOp:false;
+    document.getElementById('pEditInfo').checked=g?g.perms.editInfo:false;
+    document.getElementById('gradeModal').classList.add('open');
 }
 
-// ══════════════════════════════════════════
-//  NOTIF
-// ══════════════════════════════════════════
+function saveGrade(){
+    const nom=document.getElementById('gNom').value.trim();
+    if(!nom){showNotif('Nom requis');return;}
+    const o=orgas.find(x=>x.id===editOrgaId);
+    if(!o) return;
+    const perms={addMembre:document.getElementById('pAddMembre').checked, addOp:document.getElementById('pAddOp').checked, editInfo:document.getElementById('pEditInfo').checked};
+    // couleur automatique
+    const colors=['gc-chef','gc-bras-droit','gc-membre'];
+    const color=colors[Math.floor(Math.random()*colors.length)];
+    if(editGradeId){
+        const g=o.grades.find(x=>x.id===editGradeId);
+        if(g){g.nom=nom;g.perms=perms;}
+        showNotif('Grade mis a jour');
+    } else {
+        o.grades.push({id:'grade_'+nextId++, nom, perms, color});
+        showNotif('Grade cree : '+nom);
+    }
+    playSuccess();
+    document.getElementById('gradeModal').classList.remove('open');
+    renderAll();
+}
+
+// OPERATION
+function openOpModal(){
+    document.getElementById('opTitle').value='';
+    document.getElementById('opDesc').value='';
+    document.getElementById('opStatus').value='pending';
+    document.getElementById('opModal').classList.add('open');
+}
+
+function saveOp(){
+    const titre=document.getElementById('opTitle').value.trim();
+    if(!titre){showNotif('Titre requis');return;}
+    const o=orgas.find(x=>x.id===activeOrgaId);
+    o.ops.push({id:'op_'+nextId++, titre, desc:document.getElementById('opDesc').value.trim(), status:document.getElementById('opStatus').value});
+    playSuccess();
+    showNotif('Operation lancee');
+    document.getElementById('opModal').classList.remove('open');
+    renderOrgas(document.getElementById('winMain'));
+}
+
+function deleteOp(id){
+    const o=orgas.find(x=>x.id===activeOrgaId);
+    o.ops=o.ops.filter(x=>x.id!==id);
+    showNotif('Operation supprimee');
+    renderOrgas(document.getElementById('winMain'));
+}
+
+// INFO EDIT
+function openInfoModal(orgaId){
+    const o=orgas.find(x=>x.id===orgaId);
+    document.getElementById('infoText').value=o?o.info:'';
+    editOrgaId=orgaId;
+    document.getElementById('infoModal').classList.add('open');
+}
+
+function saveInfo(){
+    const o=orgas.find(x=>x.id===editOrgaId);
+    if(o) o.info=document.getElementById('infoText').value.trim();
+    playSuccess();
+    showNotif('Informations mises a jour');
+    document.getElementById('infoModal').classList.remove('open');
+    renderOrgas(document.getElementById('winMain'));
+}
+
+// ══════════════════════════════════════════ NOTIF
 function showNotif(text){
     playNotif();
     const n=document.getElementById('notif');
-    n.innerText=text;
-    n.classList.remove('show');
-    void n.offsetWidth;
-    n.classList.add('show');
-    n.style.display='block';
-    clearTimeout(n._t);
-    n._t=setTimeout(()=>n.style.display='none',2500);
+    n.innerText=text;n.classList.remove('show');void n.offsetWidth;
+    n.classList.add('show');n.style.display='block';
+    clearTimeout(n._t);n._t=setTimeout(()=>n.style.display='none',3000);
 }
 
-// ══════════════════════════════════════════
-//  DRAG
-// ══════════════════════════════════════════
+// ══════════════════════════════════════════ DRAG
 (function(){
-    const win=document.getElementById('mainWin');
-    const handle=document.getElementById('dragHandle');
+    const win=document.getElementById('mainWin'),h=document.getElementById('dragHandle');
     let drag=false,sx,sy,ol,ot;
-    handle.addEventListener('mousedown',e=>{
-        drag=true;sx=e.clientX;sy=e.clientY;
-        const r=win.getBoundingClientRect();
-        ol=r.left;ot=r.top;
-        win.style.transform='none';
-        win.style.left=ol+'px';win.style.top=ot+'px';
-    });
-    document.addEventListener('mousemove',e=>{
-        if(!drag)return;
-        win.style.left=(ol+e.clientX-sx)+'px';
-        win.style.top=(ot+e.clientY-sy)+'px';
-    });
+    h.addEventListener('mousedown',e=>{drag=true;sx=e.clientX;sy=e.clientY;const r=win.getBoundingClientRect();ol=r.left;ot=r.top;win.style.transform='none';win.style.left=ol+'px';win.style.top=ot+'px';});
+    document.addEventListener('mousemove',e=>{if(!drag)return;win.style.left=(ol+e.clientX-sx)+'px';win.style.top=(ot+e.clientY-sy)+'px';});
     document.addEventListener('mouseup',()=>drag=false);
 })();
 
-// hover sons
 document.querySelectorAll('.app').forEach(a=>a.addEventListener('mouseenter',playHover));
 </script>
 </body>
